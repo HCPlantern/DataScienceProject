@@ -29,6 +29,7 @@ public class Learning {
         }
 
         // 接下来正式开始爬文件
+
 /*        driver.findElement(By.linkText("刑事案件")).click();
         System.out.println(driver.getCurrentUrl());*/
         driver.quit();
