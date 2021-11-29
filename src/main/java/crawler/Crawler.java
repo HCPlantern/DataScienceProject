@@ -18,7 +18,7 @@ public class Crawler {
     public void go() {
         driver.get("https://wenshu.court.gov.cn/");
         String index = driver.getWindowHandle();
-
+        driver.findElements(By.cssSelector("iframe")).size();
         //login
         WebElement login = driver.findElement(By.id("loginLi"));
         if (login.getText().contains("登录")) {

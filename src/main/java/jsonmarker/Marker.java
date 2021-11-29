@@ -1,12 +1,9 @@
 package jsonmarker;
 
 import com.alibaba.fastjson.JSONObject;
-
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.LinkedHashMap;
 
 /**
  * 对文书内容进行标记, 输出 json 字符串
@@ -31,7 +28,8 @@ public class Marker {
     private ArrayList<String> courts;
 
     public Marker(ArrayList<SubjectInfo> subjects, String accusation, ArrayList<String> courts) {
-        jsonObject = new JSONObject();
+        // 修改 jsonObject map 数据结构 Hashmap -> LinkedHashMap, 使 json 项按照加入顺序排序
+        jsonObject = new JSONObject(new LinkedHashMap<>());
         this.subjects = subjects;
         this.accusation = accusation;
         this.courts = courts;
@@ -41,16 +39,16 @@ public class Marker {
     private void addSubjects(ArrayList<SubjectInfo> subjects) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         for (int i = 0; i < subjects.size(); i++) {
-            jsonObject.put("id" + (i + 1) + " " + "名称", subjects.get(i).name);
-            jsonObject.put("id" + (i + 1) + " " + "身份", subjects.get(i).partiesType);
+            jsonObject.put("id" + (i + 1) + "名称", subjects.get(i).name);
+            jsonObject.put("id" + (i + 1) + "身份", subjects.get(i).partiesType);
             if (subjects.get(i).isNatual) {
-                jsonObject.put("id" + (i + 1) + " " + "主体类型", "自然人");
-                jsonObject.put("id" + (i + 1) + " " + "性别", subjects.get(i).gender);
-                jsonObject.put("id" + (i + 1) + " " + "民族", subjects.get(i).ethnicity);
-                jsonObject.put("id" + (i + 1) + " " + "出生地", subjects.get(i).birthPlace);
-                jsonObject.put("id" + (i + 1) + " " + "出生日期", format.format(subjects.get(i).birthDate));
+                jsonObject.put("id" + (i + 1) + "主体类型", "自然人");
+                jsonObject.put("id" + (i + 1) + "性别", subjects.get(i).gender);
+                jsonObject.put("id" + (i + 1) + "民族", subjects.get(i).ethnicity);
+                jsonObject.put("id" + (i + 1) + "出生地", subjects.get(i).birthPlace);
+                jsonObject.put("id" + (i + 1) + "出生日期", format.format(subjects.get(i).birthDate));
             } else {
-                jsonObject.put("id" + (i + 1) + " " + "主体类型", "法人");
+                jsonObject.put("id" + (i + 1) + "主体类型", "法人");
             }
         }
     }
