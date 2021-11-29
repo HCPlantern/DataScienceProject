@@ -6,10 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 
-public class crawler {
+public class Crawler {
     WebDriver driver;
 
-    public crawler() {
+    public Crawler() {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         driver = new ChromeDriver();
     }
@@ -59,7 +59,7 @@ public class crawler {
 
 
     public static void main(String[] args) {
-        crawler crawler = new crawler();
+        Crawler crawler = new Crawler();
         crawler.go();
     }
 }
