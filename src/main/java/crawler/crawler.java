@@ -23,9 +23,9 @@ public class crawler {
         WebElement login = driver.findElement(By.id("loginLi"));
         if (login.getText().contains("登录")) {
             login(login);
+            // 确保返回了首页
             assert driver.getWindowHandle().equals(index);
-            // TODO
-            // 若首页没有刷新登录状态, 则刷新首页
+            // TODO 若首页没有刷新登录状态, 则刷新首页
         }
 
         // 接下来正式开始爬文件
@@ -46,7 +46,7 @@ public class crawler {
             e.printStackTrace();
         }
 
-        // 不刷新就加载不出来
+        // 不刷新就加载不出来填写框
         driver.navigate().refresh();
         // 输入框被一个 iframe 包裹, 先切换
         driver.switchTo().frame("contentIframe");
