@@ -96,9 +96,12 @@ public class Crawler {
     }
 
     private void download(WebElement download) {
+        download(download, 1);
+    }// 默认下载1份
+
+    private void download(WebElement download, int num) {
 
     }
-
 
     public static void main(String[] args) {
         Crawler crawler = new Crawler();
