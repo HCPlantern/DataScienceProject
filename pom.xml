@@ -63,6 +63,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.hankcs.hanlp.restful</groupId>
+            <artifactId>hanlp-restful</artifactId>
+            <version>0.0.7</version>
+        </dependency>
+
     </dependencies>
 
 </project>

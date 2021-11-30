@@ -13,22 +13,16 @@ chromedriver.exe 版本：96.0.4664.45
 
 对于每一个主体, 创建对象 SubjectInfo 添加进一个 ArrayList subjectInfos
 
-`Gender`是枚举类, 值为 `MEN` 或 `WOMEN`
-
-`Date` java自带类, 传入前需要创建一个 `DateFormat` 并以此解析输入的日期
 
 例如：
 
 ```java
-DateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
-...
-subjectInfo2 = new SubjectInfo("吴丽红",
+SubjectInfo subjectInfo2 = new SubjectInfo("吴丽红",
                     "复议申请人（案外人）",
                     true,
-                    Gender.WOMEN,
+                    "女",
                     null,
-                    // 传入日期字符串，使用 format 进行格式化
-                    format.parse("1973年2月25日"),
+                    "1973年2月25日",
                     "汉族");
 ```
 
@@ -58,23 +52,35 @@ SubjectInfo 拥有两个构造方法, 一个属于自然人, 一个属于法人
     }
 ```
 
-创建法庭名列表
+### Marker 构造方法
 
-将 subjectInfos, 案由, 法庭ArrayList 传入 Marker 构造函数，再次调用其类方法 toJson 便可得到 json 字符串
+方法1. 将 `subjectInfos`, `案由`, `法庭List` 传入 `Marker` 构造函数，再次调用其类方法 `toJson` 便可得到 json 字符串
+
+方法2. 先调用`clear()`清空 json 信息, 再使用`setter`函数，最后调用`toJson`
 
 结果:
 
 ```json
 {
-  "id1名称": "大连红枫房地产发展有限公司",
-  "id1身份": "被执行人",
-  "id1主体类型": "法人",
-  "id2名称": "吴丽红",
-  "id2身份": "复议申请人（案外人）",
-  "id2主体类型": "自然人",
-  "id2性别": "WOMEN",
-  "id2民族": "汉族",
-  "id2出生日期": "1973-02-25"
+  "主体": [
+    {
+      "名称": "大连红枫房地产发展有限公司",
+      "身份": "被执行人",
+      "自然人": false
+    },
+    {
+      "名称": "吴丽红",
+      "身份": "复议申请人（案外人）",
+      "自然人": true,
+      "性别": "女",
+      "出生日期": "1973年2月25日",
+      "民族": "汉族"
+    }
+  ],
+  "案由": "企业借贷纠纷",
+  "法院": [
+    "辽宁省高级人民法院"
+  ]
 }
 
 ```
