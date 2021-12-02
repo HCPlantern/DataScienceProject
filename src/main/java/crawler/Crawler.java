@@ -41,15 +41,11 @@ public class Crawler {
         String index = driver.getWindowHandle();
 
         //login
-        WebElement login = driver.findElement(By.id("loginLi"));
-        login(login, "15371939295", "Zjh320682@nju", index);
-
-        refresh();
+        login("15371939295", "Zjh320682@nju", index);
 
         easyCrawl("周岩松");
-        //WebElement adSearch = driver.findElement(By.cssSelector(".advenced-search"));
-        //crawlByDate(adSearch, new Date(110, 1, 1), new Date());
-        download();
+        //crawlByDate(new Date(110, 1, 1), new Date());
+        download(6);
 
         driver.quit();
     }
@@ -58,8 +54,23 @@ public class Crawler {
         driver.findElement(By.cssSelector(".case.souye")).click();
     }
 
-    private void login(WebElement loginButton, String account, String pswd, String preIndex) {
-        if (!loginButton.getText().contains("登录")) return;
+    private void refresh() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        driver.navigate().refresh();
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean login(String account, String pswd, String preIndex) {
+        WebElement loginButton = driver.findElement(By.id("loginLi"));
+        if (!loginButton.getText().contains("登录")) return true;
 
         try {
             Thread.sleep(1000);
@@ -88,26 +99,14 @@ public class Crawler {
         driver.findElement(By.cssSelector("span.button-primary")).click();
         refresh();
 
-        assert (!driver.getWindowHandle().equals(preIndex));
+        return !loginButton.getText().contains("登录") && !driver.getWindowHandle().equals(preIndex);
         // 确保返回了首页
         // 登录成功
     }
 
-    private void refresh() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        driver.navigate().refresh();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private void crawlByDate(WebElement adSearch, Date start, Date end) {
+    private void crawlByDate(Date start, Date end) {
+        WebElement adSearch = driver.findElement(By.cssSelector(".advenced-search"));
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String startDate = format.format(start);
         String endDate = format.format(end);
@@ -134,6 +133,7 @@ public class Crawler {
             e.printStackTrace();
         }
         search.click();
+        refresh();
     }
 
     private void download() {
@@ -142,10 +142,20 @@ public class Crawler {
 
     private void download(int num) {
         //检索之后，一个页面有5个记录
-        refresh();
-        List<WebElement> pages = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS*3))
+
+        List<WebElement> pages = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS * 3))
                 .until((driver -> driver.findElements(By.cssSelector(".caseName"))));
         String handle = driver.getWindowHandle();
+
+        if (pages.size() == 0) {
+            refresh();
+            pages = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS * 3))
+                    .until((driver -> driver.findElements(By.cssSelector(".caseName"))));
+            if (pages.size() == 0) {
+                System.err.println("No such case");
+                return;
+            }
+        }
 
         if (pages.size() < 5) {
             for (WebElement page : pages) pageDownload(page, handle);
@@ -157,6 +167,11 @@ public class Crawler {
             }
             WebElement nextPage = driver.findElement(By.linkText("下一页"));
             nextPage.click();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             download(num - pages.size());
         } else {
             for (int i = 0; i < num; i++) {
@@ -165,32 +180,33 @@ public class Crawler {
         }
     }
 
-    private void pageDownload(WebElement tab, String previosHandle) {
+    private void pageDownload(WebElement tab, String previousHandle) {
         tab.click();
+
         for (String windowHandle : driver.getWindowHandles()) {
-            if(!previosHandle.contentEquals(windowHandle)) {
+            if (!previousHandle.contentEquals(windowHandle)) {
                 driver.switchTo().window(windowHandle);
                 break;
             }
         }
         refresh();
         String pdfTitle = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS))
-                .until(driver ->driver.findElement(By.cssSelector(".PDF_title")).getText());
-        //String pdfTitle = driver.findElement(By.cssSelector(".PDF_title")).getText();
+                .until(driver -> driver.findElement(By.cssSelector(".PDF_title")).getText());
         WebElement pdfPox = driver.findElement(By.cssSelector(".PDF_pox"));
-        StringBuilder reason = new StringBuilder();
+        StringBuilder toWriteIn = new StringBuilder();
         driver.findElements(By.cssSelector("#iframedf .text-ellipsis"))
-                .forEach(WebElement -> reason.append(WebElement.getText()));
-        reason.append(System.lineSeparator());
+                .forEach(WebElement -> toWriteIn.append(WebElement.getText()));
+        toWriteIn.append(System.lineSeparator());
+        toWriteIn.append(pdfPox.getText());
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("./src/main/resources/" + pdfTitle))) {
-            writer.write(reason.toString());
-            writer.write(pdfPox.getAttribute("innerHTML"));
+            writer.write(toWriteIn.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         driver.close();
-        driver.switchTo().window(previosHandle);
+        driver.switchTo().window(previousHandle);
     }
 
     public static void main(String[] args) {
