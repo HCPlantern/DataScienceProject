@@ -28,9 +28,9 @@ public class MarkerTest {
                     "汉族");
         subjectInfos.add(subjectInfo2);
         courts.add("辽宁省高级人民法院");
-
         Marker marker = new Marker(subjectInfos, "企业借贷纠纷", courts);
         System.out.println(marker.toJson());
+
     }
 
 }
