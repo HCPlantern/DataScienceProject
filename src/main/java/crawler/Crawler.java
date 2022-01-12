@@ -209,8 +209,4 @@ public class Crawler {
         driver.switchTo().window(previousHandle);
     }
 
-    public static void main(String[] args) {
-        Crawler crawler = new Crawler();
-        crawler.go();
-    }
 }
