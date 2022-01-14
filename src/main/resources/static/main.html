@@ -1,0 +1,64 @@
+<!doctype html>
+<head>
+<meta charset="utf-8">
+<title>司法大数据</title>	
+<link href="css/main.css" type="text/css" rel="stylesheet">
+<link rel ="shortcut icon" type="image/x-icon" href="favicon.ico">
+<script type="text/javascript" src="./js/vue.js"></script>
+</head>
+
+<body>
+	<div class="input1" id="root">
+		<h1>司法大数据分词</h1>
+		<a v-bind :href="url">点击去往中国裁判文书网</a>
+		</br>
+		<input class="file" name="fileName" type="file" accept=".txt">
+		<button type="button" class="btn"></button>
+		<br/><br/>
+		<button v-on :click="push">提交</button>
+		<br />
+	</div>
+
+	<div class="input1" id="less">
+		<form @submit.prevent="demo"  class="input1" >
+			</br>
+			<textarea name="textfile" cols="150" rows="50" placeholder="请输入案件信息..." v-model="textarea"></textarea>
+			<br/>
+			<button>保存案件</button>
+			&nbsp;&nbsp;&nbsp;
+			<input type="reset" name="reset" value="重置">
+		</form>
+		
+	</div>
+
+
+		
+	<script>
+	const vm = new Vue({
+		el: '#root',
+		data:{
+			url:'https://wenshu.court.gov.cn/',
+			text:''
+		},
+		methods: {
+    		push(event){
+				console.log(this.text)
+      			alert('提交成功')
+    		}
+  		}
+	})
+	new Vue({
+		el: '#less',
+		data:{
+			textarea:''
+		},
+		methods:{
+			demo(){
+				console.log(JSON.stringify(this.textarea))
+			}
+		}
+	})
+	
+	</script>
+</body>
+</html>
