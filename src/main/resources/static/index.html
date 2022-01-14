@@ -5,30 +5,28 @@
     <title>This is a test"</title>
     <script src="/jquery-3.6.0.js"></script>
     <script>
-        var xmlhttp;
-        var text = document.getElementById("text").value;
-        var url = "http://localhost/participle";
+        $(function () {
+            $("#splitConfirm").click(function () {
+                var text = $("#text").val();
+                var url = "http://localhost/split";
 
-        function split() {
-            xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = returnSplitRes;
-            xmlhttp.open("POST", url, true);
-            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xmlhttp.send("text=" + text);
-        }
-
-        function returnSplitRes() {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                document.getElementById("splitRes").innerHTML = xmlhttp.responseText;
-            }
-        }
-
+                $.post(
+                    url,
+                    {"text": text},
+                    function (result) {
+                        $("#splitRes").html(result);
+                    }
+                );
+            });
+        });
     </script>
 </head>
 <body>
 
+<label for="text"></label>
 <textarea name="text" id="text" rows="10" cols="100"></textarea>
-<button id="splitConfirm" onclick="split()">分词</button>
+<button id="splitConfirm">分词</button>
+<label for="splitRes"></label>
 <textarea id="splitRes" rows="10" cols="100"></textarea>
 
 </form>
