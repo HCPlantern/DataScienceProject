@@ -1,7 +1,9 @@
 package com.workhard.wenshu.service;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import lombok.Data;
 
+@Data
 public class SubjectInfo {
     @JSONField(name = "名称", ordinal = 1)
     private String name;
@@ -53,62 +55,6 @@ public class SubjectInfo {
         this.gender = gender;
         this.birthPlace = birthPlace;
         this.birthDate = birthDate;
-        this.ethnicity = ethnicity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPartiesType() {
-        return partiesType;
-    }
-
-    public void setPartiesType(String partiesType) {
-        this.partiesType = partiesType;
-    }
-
-    public boolean isNatual() {
-        return isNatual;
-    }
-
-    public void setNatual(boolean natual) {
-        isNatual = natual;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getBirthPlace() {
-        return birthPlace;
-    }
-
-    public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getEthnicity() {
-        return ethnicity;
-    }
-
-    public void setEthnicity(String ethnicity) {
         this.ethnicity = ethnicity;
     }
 

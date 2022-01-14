@@ -5,9 +5,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
-
-public class ParticipleTest {
+public class SplitTest {
 
     String text1 = "2019年6月10日" +
             "上诉人（原审原告）：中国华融资产管理股份有限公司福建省分公司，住所地福建省福州市鼓楼区古田路112号。\n" +
@@ -58,41 +56,41 @@ public class ParticipleTest {
             "你的申诉不符合《中华人民共和国刑事诉讼法》第二百五十三条规定的重新审判条件，故予以驳回。望你尊重人民法院的生效裁判，自觉服判息诉。\n" +
             "特此通知。\n";
 
-    Participle participle;
+    Split split;
 
     @Before
     public void before() {
-        participle = new Participle();
+        split = new Split();
     }
 
     @Test
     public void test1() {
         try {
-            participle.process(text1);
+            split.process(text1);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(participle.getDateSet().toString());
-        System.out.println(participle.getLocationSet());
-        System.out.println(participle.getOrgSet());
-        System.out.println(participle.getPersonSet());
-        System.out.println(participle.getVerbSet());
-        System.out.println(participle.getAdjSet());
+        System.out.println(split.getDateSet().toString());
+        System.out.println(split.getLocationSet());
+        System.out.println(split.getOrgSet());
+        System.out.println(split.getPersonSet());
+        System.out.println(split.getVerbSet());
+        System.out.println(split.getAdjSet());
     }
 
     @Test
     public void test2() {
         try {
-            participle.process(text2);
+            split.process(text2);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(participle.getDateSet().toString());
-        System.out.println(participle.getLocationSet());
-        System.out.println(participle.getOrgSet());
-        System.out.println(participle.getPersonSet());
-        System.out.println(participle.getVerbSet());
-        System.out.println(participle.getAdjSet());
+        System.out.println(split.getDateSet().toString());
+        System.out.println(split.getLocationSet());
+        System.out.println(split.getOrgSet());
+        System.out.println(split.getPersonSet());
+        System.out.println(split.getVerbSet());
+        System.out.println(split.getAdjSet());
 
     }
 
