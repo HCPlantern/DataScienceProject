@@ -1,11 +1,13 @@
 package com.workhard.wenshu.service;
 
 import com.hankcs.hanlp.restful.HanLPClient;
+import lombok.Data;
 
 import java.io.IOException;
 import java.util.*;
 
-public class Participle {
+@Data
+public class Split {
 
     private static final String org = "ORGANIZATION";
     private static final String date = "DATE";
@@ -19,7 +21,7 @@ public class Participle {
     private final HashSet<String> verbSet;
     private final HashSet<String> adjSet;
 
-    public Participle() {
+    public Split() {
         client = new HanLPClient("https://www.hanlp.com/api", "NjYyQGJicy5oYW5scC5jb206T0NMNmd3Yjl3QW93Z1RnQg==");
         orgSet = new LinkedHashSet<>();
         dateSet = new LinkedHashSet<>();
@@ -29,7 +31,7 @@ public class Participle {
         adjSet = new LinkedHashSet<>();
     }
 
-    public Participle(String text) throws IOException {
+    public Split(String text) throws IOException {
         this();
         this.process(text);
     }
@@ -115,30 +117,6 @@ public class Participle {
                 }
             }
         }
-    }
-
-    public HashSet<String> getOrgSet() {
-        return orgSet;
-    }
-
-    public HashSet<String> getDateSet() {
-        return dateSet;
-    }
-
-    public HashSet<String> getLocationSet() {
-        return locationSet;
-    }
-
-    public HashSet<String> getPersonSet() {
-        return personSet;
-    }
-
-    public HashSet<String> getVerbSet() {
-        return verbSet;
-    }
-
-    public HashSet<String> getAdjSet() {
-        return adjSet;
     }
 
 
