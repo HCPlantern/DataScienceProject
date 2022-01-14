@@ -1,6 +1,8 @@
 package com.workhard.wenshu.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.hankcs.hanlp.restful.HanLPClient;
 import lombok.Data;
 
@@ -14,13 +16,21 @@ public class Split {
     private static final String date = "DATE";
     private static final String location = "LOCATION";
     private static final String person = "PERSON";
-    public HanLPClient client;
+    private static HanLPClient client;
+
+    @JSONField(name = "机构", ordinal = 3)
     private final HashSet<String> orgSet;
+    @JSONField(name = "日期", ordinal = 1)
     private final HashSet<String> dateSet;
+    @JSONField(name = "地点", ordinal = 2)
     private final HashSet<String> locationSet;
+    @JSONField(name = "法院", ordinal = 4)
     private final HashSet<String> courtSet;
+    @JSONField(name = "人名", ordinal = 5)
     private final HashSet<String> personSet;
+    @JSONField(name = "动词", ordinal = 6)
     private final HashSet<String> verbSet;
+    @JSONField(name = "形容词", ordinal = 7)
     private final HashSet<String> adjSet;
 
     public Split() {
@@ -28,6 +38,7 @@ public class Split {
         orgSet = new LinkedHashSet<>();
         dateSet = new LinkedHashSet<>();
         locationSet = new LinkedHashSet<>();
+        courtSet = new LinkedHashSet<>();
         personSet = new LinkedHashSet<>();
         verbSet = new LinkedHashSet<>();
         adjSet = new LinkedHashSet<>();
@@ -127,11 +138,7 @@ public class Split {
     }
 
     public String toString() {
-        Map<String, Object[]> map = new LinkedHashMap<>();
-        map.put("dates", dateSet.toArray());
-        map.put("locations", locationSet.toArray());
-        map.put("orgs", orgSet.toArray());
-        map.put("courts", )
+       return JSON.toJSONString(this);
     }
 
 }

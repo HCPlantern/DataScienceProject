@@ -3,34 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>This is a test"</title>
-    <script src="/static/js/jquery-3.6.0.js"></script>
+    <script src="js/jquery-3.6.0.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <script src ="js/bootstrap.min.js"></script>
-    <script>
-        $(function () {
-            $("#splitConfirm").click(function () {
-                var text = $("#text").val();
-                var url = "http://localhost/split";
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="https://unpkg.zhimg.com/axios/dist/axios.min.js"></script>
 
-                $.post(
-                    url,
-                    {"text": text},
-                    function (result) {
-                        $("#splitRes").html(result);
-                    }
-                );
-            });
-        });
-    </script>
 </head>
 <body>
+<div class="panel panel-default" id="splitPanel">
+    <div class="panel-heading">文书正文</div>
+    <div class="panel-body">
 
-<label for="text"></label>
-<textarea name="text" id="text" rows="10" cols="100"></textarea>
-<button class="btn btn-primary" id="splitConfirm">分词</button>
-<label for="splitRes"></label>
-<textarea id="splitRes" rows="10" cols="100"></textarea>
+        <textarea name="text" id="originalText" class="form-control" v-model="originalText"></textarea>
+        <button type="button" class="btn btn-secondary" id="splitConfirm" @click="splitConfirm">提交文书</button>
+        <textarea id="splitRes" class="form-control" v-model="splitText"></textarea>
+    </div>
+</div>
 
-</form>
+<script>
+    var url = "/split";
+    new Vue({
+        el: "#splitPanel",
+        data: {
+            originalText: "",
+            splitText: ""
+        },
+        methods: {
+            splitConfirm: function () {
+                axios.post(url, "text=" + originalText._value).then(function (response) {
+                    var jsonObject = response.data;
+                    var jsonStr = JSON.stringify(jsonObject);
+                    this.splitText = jsonStr;
+                })
+            }
+        }
+    })
+</script>
 </body>
 </html>
