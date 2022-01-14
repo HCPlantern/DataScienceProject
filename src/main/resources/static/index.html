@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>This is a test"</title>
-    <script src="/jquery-3.6.0.js"></script>
+    <script src="/static/js/jquery-3.6.0.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src ="js/bootstrap.min.js"></script>
     <script>
         $(function () {
             $("#splitConfirm").click(function () {
@@ -25,7 +27,7 @@
 
 <label for="text"></label>
 <textarea name="text" id="text" rows="10" cols="100"></textarea>
-<button id="splitConfirm">分词</button>
+<button class="btn btn-primary" id="splitConfirm">分词</button>
 <label for="splitRes"></label>
 <textarea id="splitRes" rows="10" cols="100"></textarea>
 

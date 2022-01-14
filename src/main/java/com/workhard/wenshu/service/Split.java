@@ -1,5 +1,6 @@
 package com.workhard.wenshu.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hankcs.hanlp.restful.HanLPClient;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ public class Split {
     private final HashSet<String> orgSet;
     private final HashSet<String> dateSet;
     private final HashSet<String> locationSet;
+    private final HashSet<String> courtSet;
     private final HashSet<String> personSet;
     private final HashSet<String> verbSet;
     private final HashSet<String> adjSet;
@@ -57,8 +59,13 @@ public class Split {
                 itemOfLIne = (ArrayList<String>) o;
                 switch (itemOfLIne.get(1)) {
                     case org:
-                        orgSet.add(itemOfLIne.get(0));
-                        break;
+                        if (itemOfLIne.get(0).contains("法院")) {
+                            courtSet.add(itemOfLIne.get(0));
+                            break;
+                        } else {
+                            orgSet.add(itemOfLIne.get(0));
+                            break;
+                        }
                     case date:
                         dateSet.add(itemOfLIne.get(0));
                         break;
@@ -119,6 +126,13 @@ public class Split {
         }
     }
 
+    public String toString() {
+        Map<String, Object[]> map = new LinkedHashMap<>();
+        map.put("dates", dateSet.toArray());
+        map.put("locations", locationSet.toArray());
+        map.put("orgs", orgSet.toArray());
+        map.put("courts", )
+    }
 
 }
 
