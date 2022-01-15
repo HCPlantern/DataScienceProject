@@ -18,19 +18,19 @@ public class Split {
     private static final String person = "PERSON";
     private static HanLPClient client;
 
-    @JSONField(name = "机构", ordinal = 3)
+    @JSONField(name = "org", ordinal = 3)
     private final HashSet<String> orgSet;
-    @JSONField(name = "日期", ordinal = 1)
+    @JSONField(name = "date", ordinal = 1)
     private final HashSet<String> dateSet;
-    @JSONField(name = "地点", ordinal = 2)
+    @JSONField(name = "loc", ordinal = 2)
     private final HashSet<String> locationSet;
-    @JSONField(name = "法院", ordinal = 4)
+    @JSONField(name = "court", ordinal = 4)
     private final HashSet<String> courtSet;
-    @JSONField(name = "人名", ordinal = 5)
+    @JSONField(name = "name", ordinal = 5)
     private final HashSet<String> personSet;
-    @JSONField(name = "动词", ordinal = 6)
+    @JSONField(name = "verb", ordinal = 6)
     private final HashSet<String> verbSet;
-    @JSONField(name = "形容词", ordinal = 7)
+    @JSONField(name = "adj", ordinal = 7)
     private final HashSet<String> adjSet;
 
     public Split() {

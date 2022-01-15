@@ -8,16 +8,27 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/vue.js"></script>
     <script src="https://unpkg.zhimg.com/axios/dist/axios.min.js"></script>
-
+    <!--Element UI-->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
 <div class="panel panel-default" id="splitPanel">
     <div class="panel-heading">文书正文</div>
     <div class="panel-body">
 
-        <textarea name="text" id="originalText" class="form-control" v-model="originalText"></textarea>
+        <textarea name="text" id="originalText" class="form-control" v-model="originalText">
+        </textarea>
         <button type="button" class="btn btn-secondary" id="splitConfirm" @click="splitConfirm">提交文书</button>
-        <textarea id="splitRes" class="form-control" v-model="splitText"></textarea>
+        <textarea id="splitRes" class="form-control" v-model="name">
+            {{ name }}
+        </textarea>
+
+
+
+
     </div>
 </div>
 
@@ -26,15 +37,27 @@
     new Vue({
         el: "#splitPanel",
         data: {
-            originalText: "",
-            splitText: ""
+            originalText: '',
+            splitText: [],
+            date: [],
+            loc: [],
+            org: [],
+            court: [],
+            name: [],
+            verb: [],
+            adj: []
         },
         methods: {
             splitConfirm: function () {
-                axios.post(url, "text=" + originalText._value).then(function (response) {
-                    var jsonObject = response.data;
-                    var jsonStr = JSON.stringify(jsonObject);
-                    this.splitText = jsonStr;
+                axios.post(url, "text=" + this.originalText).then(function (response) {
+                    this.splitText = response.data;
+                    this.date = this.splitText.date;
+                    this.loc = this.splitText.loc;
+                    this.org = this.splitText.org;
+                    this.court = this.splitText.court;
+                    this.name = this.splitText.name;
+                    this.verb = this.splitText.verb;
+                    this.adj = this.splitText.adj;
                 })
             }
         }
