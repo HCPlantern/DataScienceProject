@@ -12,11 +12,12 @@ public class MainController {
     public String text(@RequestParam("text") String text) {
         try {
             Split split = new Split(text);
-            return "location : " + split.getLocationSet();
+            return split.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "Fail";
+        return "Fail to split.";
     }
+
 }
 

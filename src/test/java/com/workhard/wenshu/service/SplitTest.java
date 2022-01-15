@@ -70,12 +70,7 @@ public class SplitTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(split.getDateSet().toString());
-        System.out.println(split.getLocationSet());
-        System.out.println(split.getOrgSet());
-        System.out.println(split.getPersonSet());
-        System.out.println(split.getVerbSet());
-        System.out.println(split.getAdjSet());
+        System.out.println(split.toString());
     }
 
     @Test
@@ -85,12 +80,8 @@ public class SplitTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(split.getDateSet().toString());
-        System.out.println(split.getLocationSet());
-        System.out.println(split.getOrgSet());
-        System.out.println(split.getPersonSet());
-        System.out.println(split.getVerbSet());
-        System.out.println(split.getAdjSet());
+
+        System.out.println(split.toString());
 
     }
 

@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-
 public class MarkerTest {
 
     @Test
@@ -26,7 +24,7 @@ public class MarkerTest {
         subjectInfos.add(subjectInfo2);
         courts.add("辽宁省高级人民法院");
         Marker marker = new Marker(subjectInfos, "企业借贷纠纷", courts);
-        System.out.println(marker.toJson());
+        System.out.println(marker.toString());
 
     }
 

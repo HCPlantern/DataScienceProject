@@ -1,5 +1,8 @@
 package com.workhard.wenshu.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.hankcs.hanlp.restful.HanLPClient;
 import lombok.Data;
 
@@ -13,12 +16,21 @@ public class Split {
     private static final String date = "DATE";
     private static final String location = "LOCATION";
     private static final String person = "PERSON";
-    public HanLPClient client;
+    private static HanLPClient client;
+
+    @JSONField(name = "org", ordinal = 3)
     private final HashSet<String> orgSet;
+    @JSONField(name = "date", ordinal = 1)
     private final HashSet<String> dateSet;
+    @JSONField(name = "loc", ordinal = 2)
     private final HashSet<String> locationSet;
+    @JSONField(name = "court", ordinal = 4)
+    private final HashSet<String> courtSet;
+    @JSONField(name = "name", ordinal = 5)
     private final HashSet<String> personSet;
+    @JSONField(name = "verb", ordinal = 6)
     private final HashSet<String> verbSet;
+    @JSONField(name = "adj", ordinal = 7)
     private final HashSet<String> adjSet;
 
     public Split() {
@@ -26,6 +38,7 @@ public class Split {
         orgSet = new LinkedHashSet<>();
         dateSet = new LinkedHashSet<>();
         locationSet = new LinkedHashSet<>();
+        courtSet = new LinkedHashSet<>();
         personSet = new LinkedHashSet<>();
         verbSet = new LinkedHashSet<>();
         adjSet = new LinkedHashSet<>();
@@ -57,8 +70,13 @@ public class Split {
                 itemOfLIne = (ArrayList<String>) o;
                 switch (itemOfLIne.get(1)) {
                     case org:
-                        orgSet.add(itemOfLIne.get(0));
-                        break;
+                        if (itemOfLIne.get(0).contains("法院")) {
+                            courtSet.add(itemOfLIne.get(0));
+                            break;
+                        } else {
+                            orgSet.add(itemOfLIne.get(0));
+                            break;
+                        }
                     case date:
                         dateSet.add(itemOfLIne.get(0));
                         break;
@@ -119,6 +137,9 @@ public class Split {
         }
     }
 
+    public String toString() {
+       return JSON.toJSONString(this);
+    }
 
 }
 

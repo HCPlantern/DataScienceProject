@@ -1,64 +1,113 @@
-<!doctype html>
-<head xmlns:v-bind="http://www.w3.org/1999/xhtml">
-<meta charset="utf-8">
-<title>司法大数据</title>	
-<link href="css/main.css" type="text/css" rel="stylesheet">
-<link rel ="shortcut icon" type="image/x-icon" href="favicon.ico">
-<script type="text/javascript" src="./js/vue.js"></script>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+	<title>司法大数据</title>
+	<link href="css/main.css" type="text/css" rel="stylesheet">
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+	<script type="text/javascript" src="./js/vue.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="https://ks3-cn-beijing.ksyun.com/vform2021/VFormRender.css?t=20210720">
+	<style type="text/css">
+	</style>
 </head>
 
 <body>
+
 	<div class="input1" id="root">
 		<h1>司法大数据分词</h1>
-		<a v-bind :href="url">点击去往中国裁判文书网</a>
-		</br>
+		<button @click.prevent="change">点击去往中国裁判文书网</button>
+		<br/><br/>
 		<input class="file" name="fileName" type="file" accept=".txt">
 		<button type="button" class="btn"></button>
-		<br/><br/>
-		<button v-on :click="push">提交</button>
+		<br /><br />
+		<button v-on:click="push">提交</button>
 		<br />
 	</div>
 
-	<div class="input1" id="less">
-		<form @submit.prevent="demo"  class="input1" >
-			</br>
-			<textarea name="textfile" cols="150" rows="50" placeholder="请输入案件信息..." v-model="textarea"></textarea>
+	<div class="input1" id="app1">
+		<form @submit.prevent="demo" class="input1">
 			<br/>
+			<textarea name="textfile" cols="150" rows="50" placeholder="请输入案件信息..." v-model="textarea"></textarea>
+			<br />
 			<button>保存案件</button>
 			&nbsp;&nbsp;&nbsp;
 			<input type="reset" name="reset" value="重置">
 		</form>
-		
+
 	</div>
 
+	<div id="app2">
+		<v-form-render :form-json="formJson" :form-data="formData" :option-data="optionData" ref="vFormRef">
+		</v-form-render>
+		<div class="input1">
+		<el-button  type="primary" @click="submitForm">提交</el-button>
+		</div>
+	</div>
 
-		
-	<script>
-	const vm = new Vue({
-		el: '#root',
-		data:{
-			url:'https://wenshu.court.gov.cn/',
-			text:''
-		},
-		methods: {
-    		push(event){
-				console.log(this.text)
-      			alert('提交成功')
-    		}
-  		}
-	})
-	new Vue({
-		el: '#less',
-		data:{
-			textarea:''
-		},
-		methods:{
-			demo(){
-				console.log(JSON.stringify(this.textarea))
-			}
+	<script type="text/javascript">
+		if (!!window.ActiveXObject || "ActiveXObject" in window) { //IE load polyfill.js for Promise
+			var scriptEle = document.createElement("script");
+			scriptEle.type = "text/javascript";
+			scriptEle.src = "https://cdn.bootcss.com/babel-polyfill/6.23.0/polyfill.min.js"
+			document.body.appendChild(scriptEle)
 		}
-	})
-	
+	</script>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+	<script src="https://ks3-cn-beijing.ksyun.com/vform2021/VFormRender.umd.min.js?t=20210720"></script>
+	<script>
+		const vm = new Vue({
+			el: '#root',
+			data: {
+				url: 'https://wenshu.court.gov.cn/',
+				text: ''
+			},
+			methods: {
+				push(event) {
+					alert('提交成功')
+				},
+				change() {
+					window.location.href = this.url
+				}
+			}
+		})
+		new Vue({
+			el: '#app1',
+			data: {
+				textarea: ''
+			},
+			methods: {
+				demo() {
+					console.log(JSON.stringify(this._data))
+					alert(JSON.stringify(this._data))
+				}
+			}
+		})
+		new Vue({
+			el: '#app2',
+			data: {
+				formJson: { "widgetList": [{ "type": "divider", "icon": "divider", "formItemFlag": false, "options": { "name": "divider102346", "label": "", "columnWidth": "200px", "direction": "horizontal", "contentPosition": "center", "hidden": false, "customClass": [], "onCreated": "", "onMounted": "", "disabled": false }, "id": "divider102346" }, { "type": "input", "icon": "text-field", "formItemFlag": true, "options": { "name": "name", "label": "姓名", "labelAlign": "label-center-align", "type": "text", "defaultValue": "", "placeholder": "", "columnWidth": "200px", "size": "", "labelWidth": null, "labelHidden": false, "readonly": false, "disabled": false, "hidden": false, "clearable": true, "showPassword": false, "required": true, "validation": "", "validationHint": "", "customClass": [], "labelIconClass": null, "labelIconPosition": "rear", "labelTooltip": null, "minLength": null, "maxLength": null, "showWordLimit": false, "prefixIcon": "", "suffixIcon": "", "appendButton": false, "appendButtonDisabled": false, "buttonIcon": "el-icon-search", "onCreated": "", "onMounted": "", "onInput": "", "onChange": "", "onFocus": "", "onBlur": "", "onValidate": "" }, "id": "input12931" }, { "type": "radio", "icon": "radio-field", "formItemFlag": true, "options": { "name": "sex", "label": "性别", "labelAlign": "label-center-align", "defaultValue": 1, "columnWidth": "200px", "size": "", "displayStyle": "inline", "buttonStyle": false, "border": false, "labelWidth": null, "labelHidden": false, "disabled": false, "hidden": false, "optionItems": [{ "label": "男", "value": "male" }, { "label": "女", "value": "female" }], "required": true, "validation": "", "validationHint": "", "customClass": "", "labelIconClass": null, "labelIconPosition": "rear", "labelTooltip": null, "onCreated": "", "onMounted": "", "onChange": "", "onValidate": "" }, "id": "radio24425" }, { "type": "radio", "icon": "radio-field", "formItemFlag": true, "options": { "name": "natural person", "label": "自然人", "labelAlign": "label-center-align", "defaultValue": 2, "columnWidth": "200px", "size": "", "displayStyle": "inline", "buttonStyle": false, "border": false, "labelWidth": null, "labelHidden": false, "disabled": false, "hidden": false, "optionItems": [{ "label": "是", "value": "true" }, { "label": "否", "value": "false" }], "required": true, "validation": "", "validationHint": "", "customClass": "", "labelIconClass": null, "labelIconPosition": "rear", "labelTooltip": null, "onCreated": "", "onMounted": "", "onChange": "", "onValidate": "" }, "id": "radio72534" }, { "type": "input", "icon": "text-field", "formItemFlag": true, "options": { "name": "identity", "label": "身份", "labelAlign": "label-center-align", "type": "text", "defaultValue": "", "placeholder": "", "columnWidth": "200px", "size": "", "labelWidth": null, "labelHidden": false, "readonly": false, "disabled": false, "hidden": false, "clearable": true, "showPassword": false, "required": true, "validation": "", "validationHint": "", "customClass": "", "labelIconClass": null, "labelIconPosition": "rear", "labelTooltip": null, "minLength": null, "maxLength": null, "showWordLimit": false, "prefixIcon": "", "suffixIcon": "", "appendButton": false, "appendButtonDisabled": false, "buttonIcon": "el-icon-search", "onCreated": "", "onMounted": "", "onInput": "", "onChange": "", "onFocus": "", "onBlur": "", "onValidate": "" }, "id": "input23031" }, { "type": "date", "icon": "date-field", "formItemFlag": true, "options": { "name": "date", "label": "出生日期", "labelAlign": "label-center-align", "type": "date", "defaultValue": null, "placeholder": "", "columnWidth": "200px", "size": "", "labelWidth": null, "labelHidden": false, "readonly": false, "disabled": false, "hidden": false, "clearable": true, "editable": false, "format": "yyyy-MM-dd", "valueFormat": "yyyy-MM-dd", "required": true, "validation": "", "validationHint": "", "customClass": "", "labelIconClass": null, "labelIconPosition": "rear", "labelTooltip": null, "onCreated": "", "onMounted": "", "onChange": "", "onFocus": "", "onBlur": "", "onValidate": "" }, "id": "date71325" }, { "type": "select", "icon": "select-field", "formItemFlag": true, "options": { "name": "ethnic", "label": "民族", "labelAlign": "label-center-align", "defaultValue": "请选择", "placeholder": "", "columnWidth": "200px", "size": "", "labelWidth": null, "labelHidden": false, "disabled": false, "hidden": false, "clearable": true, "filterable": false, "allowCreate": false, "remote": false, "automaticDropdown": false, "multiple": false, "multipleLimit": 0, "optionItems": [{ "value": "请选择", "label": "请选择" }, { "value": "汉族", "label": "汉族" }, { "value": "满族", "label": "满族" }, { "value": "蒙古族", "label": "蒙古族" }, { "value": "回族", "label": "回族" }, { "value": "藏族", "label": "藏族" }, { "value": "维吾尔族", "label": "维吾尔族" }, { "value": "苗族", "label": "苗族" }, { "value": "彝族", "label": "彝族" }, { "value": "壮族", "label": "壮族" }, { "value": "布依族", "label": "布依族" }, { "value": "侗族", "label": "侗族" }, { "value": "瑶族", "label": "瑶族" }, { "value": "白族", "label": "白族" }, { "value": "土家族", "label": "土家族" }, { "value": "哈尼族", "label": "哈尼族" }, { "value": "哈萨克族", "label": "哈萨克族" }, { "value": "傣族", "label": "傣族" }, { "value": "黎族", "label": "黎族" }, { "value": "傈僳族", "label": "傈僳族" }, { "value": "佤族", "label": "佤族" }, { "value": "畲族", "label": "畲族" }, { "value": "高山族", "label": "高山族" }, { "value": "拉祜族", "label": "拉祜族" }, { "value": "水族", "label": "水族" }, { "value": "东乡族", "label": "东乡族" }, { "value": "纳西族", "label": "纳西族" }, { "value": "景颇族", "label": "景颇族" }, { "value": "柯尔克孜族", "label": "柯尔克孜族" }, { "value": "土族", "label": "土族" }, { "value": "达斡尔族", "label": "达斡尔族" }, { "value": "仫佬族", "label": "仫佬族" }, { "value": "羌族", "label": "羌族" }, { "value": "布朗族", "label": "布朗族" }, { "value": "撒拉族", "label": "撒拉族" }, { "value": "毛南族", "label": "毛南族" }, { "value": "仡佬族", "label": "仡佬族" }, { "value": "锡伯族", "label": "锡伯族" }, { "value": "阿昌族", "label": "阿昌族" }, { "value": "普米族", "label": "普米族" }, { "value": "朝鲜族", "label": "朝鲜族" }, { "value": "塔吉克族", "label": "塔吉克族" }, { "value": "怒族", "label": "怒族" }, { "value": "乌孜别克族", "label": "乌孜别克族" }, { "value": "俄罗斯族", "label": "俄罗斯族" }, { "value": "鄂温克族", "label": "鄂温克族" }, { "value": "德昂族", "label": "德昂族" }, { "value": "保安族", "label": "保安族" }, { "value": "裕固族", "label": "裕固族" }, { "value": "京族", "label": "京族" }, { "value": "塔塔尔族", "label": "塔塔尔族" }, { "value": "独龙族", "label": "独龙族" }, { "value": "鄂伦春族", "label": "鄂伦春族" }, { "value": "赫哲族", "label": "赫哲族" }, { "value": "门巴族", "label": "门巴族" }, { "value": "珞巴族", "label": "珞巴族" }, { "value": "基诺族", "label": "基诺族" }], "required": true, "validation": "", "validationHint": "", "customClass": "", "labelIconClass": null, "labelIconPosition": "rear", "labelTooltip": null, "onCreated": "", "onMounted": "", "onRemoteQuery": "", "onChange": "", "onFocus": "", "onBlur": "", "onValidate": "" }, "id": "select50887" }, { "type": "textarea", "icon": "textarea-field", "formItemFlag": true, "options": { "name": "case", "label": "案由", "labelAlign": "label-center-align", "rows": 3, "defaultValue": "", "placeholder": "", "columnWidth": "200px", "size": "", "labelWidth": null, "labelHidden": false, "readonly": false, "disabled": false, "hidden": false, "required": true, "validation": "", "validationHint": "", "customClass": [], "labelIconClass": null, "labelIconPosition": "rear", "labelTooltip": null, "minLength": null, "maxLength": null, "showWordLimit": false, "onCreated": "", "onMounted": "", "onInput": "", "onChange": "", "onFocus": "", "onBlur": "", "onValidate": "" }, "id": "textarea33136" }], "formConfig": { "modelName": "formData", "refName": "vForm", "rulesName": "rules", "labelWidth": 150, "labelPosition": "left", "size": "", "labelAlign": "label-center-align", "cssCode": "", "customClass": [], "functions": "", "layoutType": "PC", "onFormCreated": "", "onFormMounted": "", "onFormDataChange": "" } },
+				formData: {},
+				optionData: {}
+			},
+			methods: {
+				submitForm: function () {
+					this.$refs.vFormRef.getFormData().then(function (formData) {
+						// Form Validation OK
+						console.log(JSON.stringify(formData))
+						alert(JSON.stringify(formData))
+					}).catch(function (error) {
+						// Form Validation Failed
+						alert(error)
+					})
+				}
+			}
+		});
 	</script>
 </body>
+
 </html>

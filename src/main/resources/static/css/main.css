@@ -42,7 +42,7 @@ h1{
 .file {
     width: 50px;
     height: 50px;
-    top: 90px;
+    top: 120px;
     z-index: 1;
     opacity: 0;
 	position: absolute;
@@ -51,6 +51,7 @@ h1{
 .btn {
     width: 50px;
     height: 50px;
+	top: 125px;
     background-image: url("../img/OIP-C.jfif");
 	background-size: 50px;
 	background-position:center;
@@ -67,4 +68,5 @@ p.one{
 	font-weight: bold;
 	color: #398CA5;
 }
+
 

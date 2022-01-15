@@ -1,5 +1,6 @@
 package com.workhard.wenshu.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -45,15 +46,8 @@ public class Marker {
         this.courts = courts;
     }
 
-    private void addSubjects() {
-        jsonObject.put("主体", subjects);
-        jsonObject.put("案由", accusation);
-        jsonObject.put("法院", courts);
-    }
-
-    public String toJson() {
-        addSubjects();
-        return jsonObject.toJSONString();
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 
     public void clear() {
