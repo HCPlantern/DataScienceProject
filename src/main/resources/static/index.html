@@ -3,39 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <title>This is a test"</title>
-    <script src="js/jquery-3.6.0.js"></script>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/vue.js"></script>
+    <link href="css/index.css" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- bootstrap CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+
+    <!-- bootstrap JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <!-- vue.js 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
     <script src="https://unpkg.zhimg.com/axios/dist/axios.min.js"></script>
-    <!--Element UI-->
-    <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
 </head>
 <body>
-<div class="panel panel-default" id="splitPanel">
-    <div class="panel-heading">文书正文</div>
-    <div class="panel-body">
-
-        <textarea name="text" id="originalText" class="form-control" v-model="originalText">
+<div class="main-body" id="main-body">
+    <div class="panel panel-default" id="splitPanel">
+        <div class="panel-heading">文书正文</div>
+        <div class="panel-body">
+            <textarea name="text" id="originalText" class="form-control" v-model="originalText">
         </textarea>
-        <button type="button" class="btn btn-secondary" id="splitConfirm" @click="splitConfirm">提交文书</button>
-        <textarea id="splitRes" class="form-control" v-model="name">
-            {{ name }}
-        </textarea>
-
-
-
-
+            <button type="button" class="btn btn-success" id="splitConfirm" @click="splitConfirm">提交文书</button>
+        </div>
     </div>
+
+    <!-- 导航 Tab -->
+    <div id="main-tab">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#select-name" role="tab"
+                   aria-controls="name" aria-selected="true">姓名</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="bornplace-tab" data-bs-toggle="tab" href="#select-born-place" role="tab"
+                   aria-controls="bornplace" aria-selected="false">出生地</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="some-tab" data-bs-toggle="tab" href="#" role="tab" aria-controls=""
+                   aria-selected="false">Any</a>
+            </li>
+        </ul>
+    </div>
+    <!-- 导航 Tab 结束-->
+
+    <!-- Tab 内容-->
+    <div class="tab-content" id="tab-content">
+
+        <!--选择姓名的单选框-->
+        <div id="select-name" class="tab-pane fade show active" role="tabpanel" aria-labelledby="person-tab">
+            选择人名
+            <select class="form-control" v-model="selectedPerson">
+                <option v-for="person in person" v-bind:value="person">
+                    {{ person }}
+                </option>
+            </select>
+            <div id="manual-add-name">
+                手动输入人名
+                <label for="toBeAddedName"></label>
+                <input type="text" class="form-control" id="toBeAddedName" placeholder="请输入人名">
+                <button type="button" class="btn btn-primary" id="addNameConfirm" @click="addName">
+                    确定添加
+                </button>
+            </div>
+        </div>
+
+        <!-- 选择出生地 -->
+        <div class="tab-pane fade" id="select-born-place" role="tabpanel" aria-labelledby="bornplace-tab">
+            选择出生地
+            <select class="form-control" v-model="selectedBornPlace">
+                <option v-for="loc in loc" v-bind:value="loc">
+                    {{ loc }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Tab 内容结束 -->
 </div>
+
 
 <script>
     var url = "/split";
-    new Vue({
-        el: "#splitPanel",
+    var vm = new Vue({
+        el: "#main-body",
         data: {
             originalText: '',
             splitText: [],
@@ -43,25 +100,35 @@
             loc: [],
             org: [],
             court: [],
-            name: [],
+            person: [],
             verb: [],
-            adj: []
+            adj: [],
+            selectedPerson: '',
+            selectedBornPlace: ''
         },
         methods: {
             splitConfirm: function () {
-                axios.post(url, "text=" + this.originalText).then(function (response) {
-                    this.splitText = response.data;
-                    this.date = this.splitText.date;
-                    this.loc = this.splitText.loc;
-                    this.org = this.splitText.org;
-                    this.court = this.splitText.court;
-                    this.name = this.splitText.name;
-                    this.verb = this.splitText.verb;
-                    this.adj = this.splitText.adj;
+                var thisVm = this;
+                axios.post(url, "text=" + thisVm.originalText).then(function (response) {
+                    console.log(response.data);
+                    thisVm.splitText = response.data;
+                    thisVm.date = thisVm.splitText.date;
+                    thisVm.loc = thisVm.splitText.loc;
+                    thisVm.org = thisVm.splitText.org;
+                    thisVm.court = thisVm.splitText.court;
+                    thisVm.person = thisVm.person.concat(thisVm.splitText.person);
+                    thisVm.verb = thisVm.splitText.verb;
+                    thisVm.adj = thisVm.splitText.adj;
                 })
+            },
+            addName: function () {
+                var name = $("#toBeAddedName").val();
+                this.person.push(name);
             }
         }
     })
+
+
 </script>
 </body>
 </html>

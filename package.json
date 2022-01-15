@@ -1,0 +1,7 @@
+{
+  "name": "DataScienceProject",
+  "version": "1.0.0",
+  "dependencies": {
+    "element-ui": "^2.15.6"
+  }
+}

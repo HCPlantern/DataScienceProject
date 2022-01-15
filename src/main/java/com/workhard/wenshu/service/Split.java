@@ -26,7 +26,7 @@ public class Split {
     private final HashSet<String> locationSet;
     @JSONField(name = "court", ordinal = 4)
     private final HashSet<String> courtSet;
-    @JSONField(name = "name", ordinal = 5)
+    @JSONField(name = "person", ordinal = 5)
     private final HashSet<String> personSet;
     @JSONField(name = "verb", ordinal = 6)
     private final HashSet<String> verbSet;

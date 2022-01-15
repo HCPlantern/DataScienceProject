@@ -1,0 +1,10 @@
+
+.main-body {
+    max-width: 50rem;
+    margin: auto;
+    padding: 1rem 4rem;
+}
+
+#originalText{
+    height: 30rem;
+}
