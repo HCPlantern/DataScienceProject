@@ -17,6 +17,8 @@ public class Split {
     private static final String location = "LOCATION";
     private static final String person = "PERSON";
     private static HanLPClient client;
+    private static final String url = "https://www.hanlp.com/api";
+    private static final String auth = "NjYyQGJicy5oYW5scC5jb206T0NMNmd3Yjl3QW93Z1RnQg==";
 
     @JSONField(name = "org", ordinal = 3)
     private final HashSet<String> orgSet;
@@ -34,7 +36,7 @@ public class Split {
     private final HashSet<String> adjSet;
 
     public Split() {
-        client = new HanLPClient("https://www.hanlp.com/api", "NjYyQGJicy5oYW5scC5jb206T0NMNmd3Yjl3QW93Z1RnQg==");
+        client = new HanLPClient(url, auth);
         orgSet = new LinkedHashSet<>();
         dateSet = new LinkedHashSet<>();
         locationSet = new LinkedHashSet<>();

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 /**
+ * !! 此类并未被使用 !!
  * 对文书内容进行标记, 输出 json 字符串
  * 标注内容:
  * ---当事人 (SubjectInfo 类)
