@@ -30,11 +30,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="splitSuccessModalLabel">提交成功</h5>
+                <h5 class="modal-title" id="splitSuccessModalLabel">成功</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                成功提交文书文本
+                成功提交文书
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -45,77 +45,81 @@
 
 
 <div class="main-body" id="main-body">
-    <div class="panel panel-default" id="splitPanel">
+    <div class="panel panel-default" id="split-part">
         <div class="panel-heading">文书正文</div>
         <div class="panel-body">
             <textarea name="text" id="originalText" class="form-control" v-model="originalText">
         </textarea>
             <button type="button" class="btn btn-success" id="splitConfirm" data-bs-toggle="modal"
-                    data-bs-target="#splitSuccessModal" @click="splitConfirm">提交文书
+                    data-bs-target="#splitSuccessModal" @click="splitConfirm">文书分词
             </button>
         </div>
+        <div id="uploadFile">
+            <label class="form-label" for="wenshuFile">上传文书文件</label>
+            <input type="file" class="form-control" id="wenshuFile"/>
+        </div>
     </div>
+    <div id="mark-part">
+        <!-- 导航 Tab -->
+        <div id="main-tab">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#select-name" role="tab"
+                       aria-selected="true">姓名</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="gender-tab" data-bs-toggle="tab" href="#select-gender" role="tab"
+                       aria-selected="false">性别</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="ethnic-tab" data-bs-toggle="tab" href="#select-ethnic" role="tab"
+                       aria-selected="false">民族</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="bornplace-tab" data-bs-toggle="tab" href="#select-born-place" role="tab"
+                       aria-selected="false">出生地</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="accusation-tab" data-bs-toggle="tab" href="#select-accusation" role="tab"
+                       aria-selected="false">案由</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="court-tab" data-bs-toggle="tab" href="#select-court" role="tab"
+                       aria-selected="false">法院</a>
+                </li>
+            </ul>
+        </div>
+        <!-- 导航 Tab 结束-->
 
-    <!-- 导航 Tab -->
-    <div id="main-tab">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#select-name" role="tab"
-                   aria-selected="true">姓名</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="gender-tab" data-bs-toggle="tab" href="#select-gender" role="tab"
-                   aria-selected="false">性别</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="ethnic-tab" data-bs-toggle="tab" href="#select-ethnic" role="tab"
-                   aria-selected="false">民族</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="bornplace-tab" data-bs-toggle="tab" href="#select-born-place" role="tab"
-                   aria-selected="false">出生地</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="accusation-tab" data-bs-toggle="tab" href="#select-accusation" role="tab"
-                   aria-selected="false">案由</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="court-tab" data-bs-toggle="tab" href="#select-court" role="tab"
-                   aria-selected="false">法院</a>
-            </li>
-        </ul>
-    </div>
-    <!-- 导航 Tab 结束-->
+        <!-- Tab 内容-->
+        <div class="tab-content" id="tab-content">
 
-    <!-- Tab 内容-->
-    <div class="tab-content" id="tab-content">
+            <!--选择姓名的单选框-->
+            <div id="select-name" class="tab-pane fade show active" role="tabpanel" aria-labelledby="person-tab">
+                选择人名
+                <select class="form-control" v-model="selectedPerson">
+                    <option v-for="person in person" v-bind:value="person">
+                        {{ person }}
+                    </option>
+                </select>
+                <div id="manual-add-name">
+                    手动输入人名
+                    <label for="toBeAddedName"></label>
+                    <input type="text" class="form-control" id="toBeAddedName" placeholder="请输入人名">
+                    <button type="button" class="btn btn-primary" id="addNameConfirm" @click="addName">
+                        确定添加
+                    </button>
+                </div>
 
-        <!--选择姓名的单选框-->
-        <div id="select-name" class="tab-pane fade show active" role="tabpanel" aria-labelledby="person-tab">
-            选择人名
-            <select class="form-control" v-model="selectedPerson">
-                <option v-for="person in person" v-bind:value="person">
-                    {{ person }}
-                </option>
-            </select>
-            <div id="manual-add-name">
-                手动输入人名
-                <label for="toBeAddedName"></label>
-                <input type="text" class="form-control" id="toBeAddedName" placeholder="请输入人名">
-                <button type="button" class="btn btn-primary" id="addNameConfirm" @click="addName">
-                    确定添加
-                </button>
+                <p> SelectedName : {{ selectedPerson }}</p>
             </div>
 
-            <p> SelectedName : {{ selectedPerson }}</p>
-        </div>
+            <!-- 选择性别 -->
+            <div class="tab-pane fade" id="select-gender" role="tabpanel" aria-labelledby="gender-tab">
+                选择性别
 
-        <!-- 选择性别 -->
-        <div class="tab-pane fade" id="select-gender" role="tabpanel" aria-labelledby="gender-tab">
-            选择性别
-
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="select-gender" id="select-gender-man"
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="select-gender" id="select-gender-man"
                         value="男" v-model="selectedGender">
                 <label class="form-check-label" for="select-gender-man">
                     男
@@ -200,11 +204,15 @@
             <p> selectedCourt: {{ selectedCourt}}</p>
         </div>
 
+        </div>
+        <!-- Tab 内容结束-->
     </div>
-    <!-- Tab 内容结束-->
 </div>
 
 <script>
+    $(function () {
+        vm.init();
+    })
 
 
     var url = "/split";
@@ -232,6 +240,20 @@
             ],
         },
         methods: {
+            init: function () {
+                this.txtDom = document.getElementById('wenshuFile');
+                this.txtDom.addEventListener('change', this.updateTxt, false);
+            },
+            updateTxt(e) {
+                let selectedFile = document.getElementById('wenshuFile').files[0];
+                let reader = new FileReader(); // 读取TXT起重要作用的
+                reader.readAsText(selectedFile);
+                reader.onload = oFREvent => { // 读取完毕从中取值
+                    let pointsTxt = oFREvent.target.result;
+                    this.originalText = pointsTxt;// 获取到的TXT文件
+                };
+                e.target.value = null;
+            },
             splitConfirm: function () {
                 var thisVm = this;
                 var data = {anythingHere: thisVm.originalText};
@@ -260,7 +282,8 @@
             },
             addCourt: function () {
                 this.court.push($("#toBeAddedCourt").val());
-            }
+            },
+
         }
     })
 
