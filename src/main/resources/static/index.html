@@ -25,7 +25,7 @@
 <body>
 
 <div class="main-body" id="main-body">
-    <!-- Modal 点击提交之后将弹出窗口提示成功提交文书 -->
+    <!-- Modal 点击提交之后将弹出窗口提示文书相关内容 -->
     <div class="modal fade" id="splitSuccessModal" tabindex="-1" aria-labelledby="splitSuccessModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -36,13 +36,12 @@
                 <div v-if="hasOriginalText" class="modal-body">
                     成功提交文书
                 </div>
-                <div v-if="!hasOriginalText" class="modal-body">
+                <div v-else class="modal-body">
                     请先填写文书内容！
                 </div>
             </div>
         </div>
-</div>
-
+    </div>
 
     <div class="panel panel-default" id="split-part">
         <div class="panel-heading">文书正文</div>
@@ -63,27 +62,27 @@
         <div id="main-tab">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#select-name" role="tab"
+                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#select-name-div" role="tab"
                        aria-selected="true">姓名</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="gender-tab" data-bs-toggle="tab" href="#select-gender" role="tab"
+                    <a class="nav-link" id="gender-tab" data-bs-toggle="tab" href="#select-gender-div" role="tab"
                        aria-selected="false">性别</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="ethnic-tab" data-bs-toggle="tab" href="#select-ethnic" role="tab"
+                    <a class="nav-link" id="ethnic-tab" data-bs-toggle="tab" href="#select-ethnic-div" role="tab"
                        aria-selected="false">民族</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="bornplace-tab" data-bs-toggle="tab" href="#select-born-place" role="tab"
+                    <a class="nav-link" id="bornplace-tab" data-bs-toggle="tab" href="#select-born-place-div" role="tab"
                        aria-selected="false">出生地</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="accusation-tab" data-bs-toggle="tab" href="#select-accusation" role="tab"
+                    <a class="nav-link" id="accusation-tab" data-bs-toggle="tab" href="#select-accusation-div" role="tab"
                        aria-selected="false">案由</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="court-tab" data-bs-toggle="tab" href="#select-court" role="tab"
+                    <a class="nav-link" id="court-tab" data-bs-toggle="tab" href="#select-court-div" role="tab"
                        aria-selected="false">法院</a>
                 </li>
             </ul>
@@ -94,7 +93,7 @@
         <div class="tab-content" id="tab-content">
 
             <!--选择姓名的单选框-->
-            <div id="select-name" class="tab-pane fade show active" role="tabpanel" aria-labelledby="person-tab">
+            <div id="select-name-div" class="tab-pane fade show active" role="tabpanel" aria-labelledby="person-tab">
                 选择人名
                 <select class="form-control" v-model="selectedPerson">
                     <option v-for="person in person" v-bind:value="person">
@@ -114,7 +113,7 @@
             </div>
 
             <!-- 选择性别 -->
-            <div class="tab-pane fade" id="select-gender" role="tabpanel" aria-labelledby="gender-tab">
+            <div class="tab-pane fade" id="select-gender-div" role="tabpanel" aria-labelledby="gender-tab">
                 选择性别
 
                 <div class="form-check">
@@ -135,7 +134,7 @@
             </div>
 
             <!-- 选择出生地 -->
-            <div class="tab-pane fade" id="select-born-place" role="tabpanel" aria-labelledby="bornplace-tab">
+            <div class="tab-pane fade" id="select-born-place-div" role="tabpanel" aria-labelledby="bornplace-tab">
                 选择出生地
                 <select class="form-control" v-model="selectedBornPlace">
                     <option v-for="loc in loc" v-bind:value="loc">
@@ -155,7 +154,7 @@
 
 
             <!-- 选择民族 -->
-            <div class="tab-pane fade" id="select-ethnic" role="tabpanel" aria-labelledby="ethnic-tab">
+            <div class="tab-pane fade" id="select-ethnic-div" role="tabpanel" aria-labelledby="ethnic-tab">
                 选择民族
                 <select class="form-control" v-model="selectedEthnicity">
                     <option v-for="ethnicity in ethnicity" v-bind:value="ethnicity">
@@ -166,7 +165,7 @@
             </div>
 
             <!-- 选择案由 -->
-            <div class="tab-pane fade" id="select-accusation" role="tabpanel" aria-labelledby="accusation-tab">
+            <div class="tab-pane fade" id="select-accusation-div" role="tabpanel" aria-labelledby="accusation-tab">
                 选择案由
                 <select class="form-control" v-model="selectedAccusation">
                     <option v-for="accusation in accusation" v-bind:value="accusation">
@@ -185,7 +184,7 @@
             </div>
 
             <!-- 选择法院 -->
-            <div class="tab-pane fade" id="select-court" role="tabpanel" aria-labelledby="court-tab">
+            <div class="tab-pane fade" id="select-court-div" role="tabpanel" aria-labelledby="court-tab">
                 选择法院
                 <select class="form-control" multiple="multiple" v-model="selectedCourt">
                     <option v-for="court in court" v-bind:value="court">
