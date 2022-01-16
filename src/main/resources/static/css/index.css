@@ -6,6 +6,10 @@
     height: 1200px;
 }
 
-#originalText{
+#originalText {
     height: 25rem;
+}
+
+#tab-content {
+    height: 350px;
 }
