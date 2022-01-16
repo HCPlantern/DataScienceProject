@@ -9,9 +9,9 @@ import java.io.IOException;
 public class MainController {
 
     @PostMapping("/split")
-    public String text(@RequestParam("text") String text) {
+    public String text(@RequestBody String string) {
         try {
-            Split split = new Split(text);
+            Split split = new Split(string);
             return split.toString();
         } catch (IOException e) {
             e.printStackTrace();
