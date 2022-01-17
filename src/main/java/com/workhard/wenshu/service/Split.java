@@ -3,6 +3,9 @@ package com.workhard.wenshu.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.hankcs.hanlp.collection.AhoCorasick.AhoCorasickDoubleArrayTrie;
+import com.hankcs.hanlp.dictionary.CoreDictionary;
+import com.hankcs.hanlp.dictionary.CustomDictionary;
 import com.hankcs.hanlp.restful.HanLPClient;
 import lombok.Data;
 
@@ -30,9 +33,11 @@ public class Split {
     private final HashSet<String> courtSet;
     @JSONField(name = "person", ordinal = 5)
     private final HashSet<String> personSet;
-    @JSONField(name = "verb", ordinal = 6)
+    @JSONField(name = "accusation", ordinal = 6)
+    private final HashSet<String> accusationSet;
+    @JSONField(name = "verb", ordinal = 7)
     private final HashSet<String> verbSet;
-    @JSONField(name = "adj", ordinal = 7)
+    @JSONField(name = "adj", ordinal = 8)
     private final HashSet<String> adjSet;
 
     public Split() {
@@ -42,6 +47,7 @@ public class Split {
         locationSet = new LinkedHashSet<>();
         courtSet = new LinkedHashSet<>();
         personSet = new LinkedHashSet<>();
+        accusationSet = new LinkedHashSet<>();
         verbSet = new LinkedHashSet<>();
         adjSet = new LinkedHashSet<>();
     }
@@ -56,7 +62,9 @@ public class Split {
         // 分别处理四种特殊情况
         addFourSet(participleRes.get("ner/msra"));
         addNounAdj(participleRes.get("tok/fine"), participleRes.get("pos/pku"));
+        addAccusation(text);
     }
+
 
     /* 对地点集合进行特殊的合并操作 */
     private void addFourSet(List msra) {
@@ -139,8 +147,23 @@ public class Split {
         }
     }
 
+
+    private void addAccusation(String text) {
+        addCustomDic.addAccusationToDic();
+        final char[] charArray = text.toCharArray();
+        CustomDictionary.parseText(charArray, new AhoCorasickDoubleArrayTrie.IHit<CoreDictionary.Attribute>() {
+            @Override
+            public void hit(int begin, int end, CoreDictionary.Attribute value) {
+                String lexical = value.toString().split(" ")[0];
+                if (lexical.equals("accusation")) {
+                    accusationSet.add(new String(charArray, begin, end - begin));
+                }
+            }
+        });
+    }
+
     public String toString() {
-       return JSON.toJSONString(this);
+        return JSON.toJSONString(this);
     }
 
 }
