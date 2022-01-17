@@ -207,10 +207,10 @@
 
         </div>
         <!-- Tab 内容结束-->
-        
+
     </div>
-    <button type="primary" class="btn btn-primary" @click="downloadtxt">导出案件文本</button>
-    <button type="primary" class="btn btn-primary" @click="downloadjson">导出标注</button>
+    <button v-if="hasOriginalText" type="primary" class="btn btn-primary" @click="downloadtxt">导出案件文本</button>
+    <button v-if="hasJsonText" type="primary" class="btn btn-primary" @click="downloadjson">导出标注</button>
 </div>
 
 <script>
@@ -224,6 +224,7 @@
         el: "#main-body",
         data: {
             hasOriginalText: false,
+            hasJsonText: false,
             originalText: '',
             splitText: [],
             toBeSelected: {
@@ -251,6 +252,9 @@
         watch: {
             originalText: function () {
                vm.hasOriginalText = (vm.originalText != null && vm.originalText !== "");
+            },
+            'selected.Criminals': function() {
+                vm.hasJsonText = (vm.selected.Criminals != null && vm.selected.Criminals !== "");
             }
         },
         methods: {
@@ -272,6 +276,7 @@
                    Object.values(vm.toBeSelected)[i].splice(0, Object.values(vm.toBeSelected)[i].length);
                }
                 var thisVm = this;
+                this.hasJsonText = false;
                 var data = {anythingHere: thisVm.originalText};
                 axios.post(url, data).then(function (response) {
                     console.log(response.data);
