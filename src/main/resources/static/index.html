@@ -1,231 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>This is a test"</title>
     <link href="css/index.css" rel="stylesheet">
 
+    <!--引入 element-ui 的样式，-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- bootstrap CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-    <!-- bootstrap JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"></script>
     <!-- vue.js 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script type="text/javascript" src="./js/FileSaver.js"></script>
     <script src="https://unpkg.zhimg.com/axios/dist/axios.min.js"></script>
 
+    <!-- 引入element 的组件库-->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
 
 <div class="main-body" id="main-body">
-    <!-- Modal 点击提交之后将弹出窗口提示文书相关内容 -->
-    <div class="modal fade" id="splitSuccessModal" tabindex="-1" aria-labelledby="splitSuccessModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div v-if="hasOriginalText" class="modal-body">
-                    成功提交文书
-                </div>
-                <div v-else class="modal-body">
-                    请先填写文书内容！
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="panel panel-default" id="split-part">
-        <div class="panel-heading">文书正文</div>
-        <div class="panel-body">
-            <textarea name="text" id="originalText" class="form-control" v-model="originalText">
-        </textarea>
-            <button type="button" class="btn btn-success" id="splitConfirm" data-bs-toggle="modal"
-                    data-bs-target="#splitSuccessModal" @click="splitConfirm">分词
-            </button>
+    <div id="split-part">
+        <h1>文书部分</h1>
+        <div>
+            <h3>手动输入文书</h3>
+            <el-input type="textarea" :autosize="{ minRows: 10, maxRows: 20}" placeholder="请输入文书内容" name="text"
+                      id="originalText" class="form-control" v-model="originalText">
+            </el-input>
+
         </div>
         <div id="uploadFile">
-            <label class="form-label" for="wenshuFile">上传文书文件</label>
-            <input type="file" class="form-control" id="wenshuFile"/>
+            <h3>上传文书文件</h3>
+            <el-upload
+                    :limit="1"
+                    drag
+                    id="wenshuFile"
+                    name="wenshuFile"
+                    action="/upload"
+                    accept="text/txt"
+                    :on-success="this.uploadSuccess"
+            >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div slot="tip" class="el-upload__tip">只能上传txt文件，且只能上传一个</div>
+            </el-upload>
+            <el-button type="primary" :disabled="!hasOriginalText" id="splitConfirm"
+                       @click="splitConfirm">分词
+            </el-button>
         </div>
     </div>
     <div id="mark-part">
-        <p>
-            标记部分
-        </p>
-        <!-- 导航 Tab -->
-        <div id="main-tab">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#select-name-div" role="tab"
-                       aria-selected="true">姓名</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="gender-tab" data-bs-toggle="tab" href="#select-gender-div" role="tab"
-                       aria-selected="false">性别</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="ethnic-tab" data-bs-toggle="tab" href="#select-ethnic-div" role="tab"
-                       aria-selected="false">民族</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="bornplace-tab" data-bs-toggle="tab" href="#select-born-place-div" role="tab"
-                       aria-selected="false">出生地</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="accusation-tab" data-bs-toggle="tab" href="#select-accusation-div" role="tab"
-                       aria-selected="false">案由</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="court-tab" data-bs-toggle="tab" href="#select-court-div" role="tab"
-                       aria-selected="false">法院</a>
-                </li>
-            </ul>
-        </div>
-        <!-- 导航 Tab 结束-->
+        <h1> 标记部分 </h1>
 
-        <!-- Tab 内容-->
-        <div class="tab-content" id="tab-content">
-
-            <!--选择姓名的单选框-->
-            <div id="select-name-div" class="tab-pane fade show active" role="tabpanel" aria-labelledby="person-tab">
-                选择人名
-                <select class="form-control" v-model="selected.Criminals">
-                    <option v-for="person in toBeSelected.person" v-bind:value="person">
-                        {{ person }}
-                    </option>
-                </select>
-                <div id="manual-add-name">
-                    手动输入人名
-                    <label for="toBeAddedName"></label>
-                    <input type="text" class="form-control" id="toBeAddedName" placeholder="请输入人名">
-                    <button type="button" class="btn btn-primary" id="addNameConfirm" @click="addName">
+        <el-tabs tab-position="top" type="border-card">
+            <el-tab-pane label="姓名">
+                <!--选择姓名的单选框-->
+                <div id="select-name-div" class="select-div">
+                    <h5>选择人名</h5>
+                    <el-select filterable v-model="selected.Criminals">
+                        <el-option v-for="person in toBeSelected.person" :value="person">
+                            {{ person }}
+                        </el-option>
+                    </el-select>
+                    <div id="manual-add-name" class="manual-add">
+                        <h5>手动输入人名</h5>
+                        <el-input id="toBeAddedName" placeholder="请输入人名" v-model="toBeAddedName">
+                        </el-input>
+                    </div>
+                    <el-button type="primary" id="addNameConfirm" @click="addName">
                         确定添加
-                    </button>
+                    </el-button>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="性别">
+
+                <!-- 选择性别 -->
+                <div id="select-gender-div" class="select-div">
+                    <h5>选择性别</h5>
+
+                    <el-radio id="select-gender-man"
+                              label="男" v-model="selected.Gender">男
+                    </el-radio>
+                    <el-radio id="select-gender-woman"
+                              label="女" v-model="selected.Gender">女
+                    </el-radio>
+                    <el-radio id="select-gender-unknown"
+                              label="未知" v-model="selected.Gender">未知
+                    </el-radio>
                 </div>
 
-                <p> SelectedName : {{ selected.Criminals }}</p>
-            </div>
+            </el-tab-pane>
+            <el-tab-pane label="民族">
 
-            <!-- 选择性别 -->
-            <div class="tab-pane fade" id="select-gender-div" role="tabpanel" aria-labelledby="gender-tab">
-                选择性别
+                <!-- 选择民族 -->
+                <div id="select-ethnic-div" class="select-div">
+                    <h5>选择民族</h5>
+                    <el-select filterable v-model="selected.Ethnicity">
+                        <el-option v-for="ethnicity in ethnicity" :value="ethnicity">
+                            {{ ethnicity }}
+                        </el-option>
+                    </el-select>
+                </div>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="select-gender" id="select-gender-man"
-                           value="男" v-model="selected.Gender">
-                    <label class="form-check-label" for="select-gender-man">
-                        男
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="select-gender" id="select-gender-woman"
-                           value="女" v-model="selected.Gender">
-                    <label class="form-check-label" for="select-gender-woman">
-                        女
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="select-gender" id="select-gender-unknown"
-                           value="未知" v-model="selected.Gender">
-                    <label class="form-check-label" for="select-gender-unknown">
-                        未知
-                    </label>
-                </div>
-                <p> selectedGender: {{selected.Gender}}</p>
-            </div>
+            </el-tab-pane>
+            <el-tab-pane label="出生地">
 
-            <!-- 选择出生地 -->
-            <div class="tab-pane fade" id="select-born-place-div" role="tabpanel" aria-labelledby="bornplace-tab">
-                选择出生地
-                <select class="form-control" v-model="selected.Birthplace">
-                    <option v-for="loc in toBeSelected.loc" v-bind:value="loc">
-                        {{ loc }}
-                    </option>
-                </select>
-                <div id="manual-add-loc">
-                    手动输入地名
-                    <label for="toBeAddedLoc"></label>
-                    <input type="text" class="form-control" id="toBeAddedLoc" placeholder="请输入地名">
-                    <button type="button" class="btn btn-primary" id="addLocConfirm" @click="addLoc">
+
+                <!-- 选择出生地 -->
+                <div id="select-born-place-div" class="select-div">
+                    <h5>选择出生地</h5>
+                    <el-select filterable v-model="selected.Birthplace">
+                        <el-option v-for="loc in toBeSelected.loc" :value="loc">
+                            {{ loc }}
+                        </el-option>
+                    </el-select>
+                    <div id="manual-add-loc" class="manual-add">
+                        <h5>手动输入地名</h5>
+                        <el-input type="text" id="toBeAddedLoc" v-model="toBeAddedLoc" placeholder="请输入地名"></el-input>
+                    </div>
+                    <el-button type="primary" id="addLocConfirm" @click="addLoc">
                         确定添加
-                    </button>
+                    </el-button>
                 </div>
-                <p> selectedBornPlace: {{ selected.Birthplace }}</p>
-            </div>
+
+            </el-tab-pane>
+            <el-tab-pane label="案由">
 
 
-            <!-- 选择民族 -->
-            <div class="tab-pane fade" id="select-ethnic-div" role="tabpanel" aria-labelledby="ethnic-tab">
-                选择民族
-                <select class="form-control" v-model="selected.Ethnicity">
-                    <option v-for="ethnicity in ethnicity" v-bind:value="ethnicity">
-                        {{ ethnicity }}
-                    </option>
-                </select>
-                <p> selectedEthnicity: {{ selected.Ethnicity }}</p>
-            </div>
+                <!-- 选择案由 -->
+                <div id="select-accusation-div" class="select-div">
+                    <h5>选择案由</h5>
+                    <el-select multiple filterable v-model="selected.Accusation">
+                        <el-option v-for="accusation in toBeSelected.accusation" :value="accusation">
+                            {{ accusation }}
+                        </el-option>
+                    </el-select>
 
-            <!-- 选择案由 -->
-            <div class="tab-pane fade" id="select-accusation-div" role="tabpanel" aria-labelledby="accusation-tab">
-                选择案由
-                <select class="form-control" multiple="multiple" v-model="selected.Accusation">
-                    <option v-for="accusation in toBeSelected.accusation" v-bind:value="accusation">
-                        {{ accusation }}
-                    </option>
-                </select>
-                <div id="manual-add-accusation">
-                    手动输入案由
-                    <label for="toBeAddedAccusation"></label>
-                    <input type="text" class="form-control" id="toBeAddedAccusation" placeholder="请输入案由">
-                    <button type="button" class="btn btn-primary" id="addAccusationConfirm" @click="addAccusation">
+                    <div id="manual-add-accusation" class="manual-add">
+                        <h5>手动输入案由</h5>
+                        <el-input type="text" id="toBeAddedAccusation" placeholder="请输入案由"
+                                  v-model="toBeAddedAccusation"></el-input>
+                    </div>
+                    <el-button type="primary" id="addAccusationConfirm" @click="addAccusation">
                         确定添加
-                    </button>
+                    </el-button>
                 </div>
-                <p> selectedAccusation: {{ selected.Accusation }}</p>
-            </div>
+            </el-tab-pane>
+            <el-tab-pane label="法院">
 
-            <!-- 选择法院 -->
-            <div class="tab-pane fade" id="select-court-div" role="tabpanel" aria-labelledby="court-tab">
-                选择法院
-                <select class="form-control" multiple="multiple" v-model="selected.Courts">
-                    <option v-for="court in toBeSelected.court" v-bind:value="court">
-                        {{ court }}
-                    </option>
-                </select>
-                <div id="manual-add-court">
-                    手动输入法院
-                    <label for="toBeAddedCourt"></label>
-                    <input type="text" class="form-control" id="toBeAddedCourt" placeholder="请输入法院">
-                    <button type="button" class="btn btn-primary" id="addCourtConfirm" @click="addCourt">
+                <!-- 选择法院 -->
+                <div id="select-court-div" class="select-div">
+                    <h5>选择法院</h5>
+                    <el-select multiple v-model="selected.Courts">
+                        <el-option v-for="court in toBeSelected.court" v-bind:value="court">
+                            {{ court }}
+                        </el-option>
+                    </el-select>
+                    <div id="manual-add-court" class="manual-add">
+                        <h5>手动输入法院</h5>
+                        <el-input type="text" id="toBeAddedCourt" placeholder="请输入法院"
+                                  v-model="toBeAddedCourt"></el-input>
+                    </div>
+                    <el-button type="primary" id="addCourtConfirm" @click="addCourt">
                         确定添加
-                    </button>
+                    </el-button>
                 </div>
-                <p> selectedCourt: {{ selected.Courts }}</p>
-            </div>
+            </el-tab-pane>
 
-        </div>
-        <!-- Tab 内容结束-->
+        </el-tabs>
+
 
     </div>
-    <button v-if="hasOriginalText" type="primary" class="btn btn-primary" @click="downloadtxt">导出案件文本</button>
-    <button v-if="hasJsonText" type="primary" class="btn btn-primary" @click="downloadjson">导出标注</button>
+    <h3>导出</h3>
+    <el-button :disabled="!hasOriginalText" type="primary" @click="downloadtxt">导出案件文本</el-button>
+    <el-button :disabled="!hasJsonText" type="primary" @click="downloadjson">导出标注</el-button>
 </div>
 
 <script>
     $(function () {
         vm.init();
     })
-
-
     var url = "/split";
     var vm = new Vue({
         el: "#main-body",
@@ -234,6 +190,10 @@
             hasJsonText: false,
             originalText: '',
             splitText: [],
+            toBeAddedName: '',
+            toBeAddedLoc: '',
+            toBeAddedAccusation: '',
+            toBeAddedCourt: '',
             toBeSelected: {
                 date: [],
                 loc: [],
@@ -249,7 +209,7 @@
                 Gender: '',
                 Ethnicity: '',
                 Birthplace: '',
-                Accusation: '',
+                Accusation: [],
                 Courts: [],
             },
             ethnicity: [
@@ -266,20 +226,9 @@
         },
         methods: {
             init: function () {
-                this.txtDom = document.getElementById('wenshuFile');
-                this.txtDom.addEventListener('change', this.updateTxt, false);
                 for (var i = 0; i < Object.values(vm.toBeSelected).length; i++) {
                     Object.values(vm.toBeSelected)[i].push("未知");
                 }
-            },
-            updateTxt(e) {
-                let selectedFile = document.getElementById('wenshuFile').files[0];
-                let reader = new FileReader(); // 读取TXT起重要作用的
-                reader.readAsText(selectedFile);
-                reader.onload = oFREvent => { // 读取完毕从中取值
-                    this.originalText = oFREvent.target.result;// 获取到的TXT文件
-                };
-                e.target.value = null;
             },
             splitConfirm: function () {
                for (var i = 0; i < Object.values(vm.toBeSelected).length; i++) {
@@ -289,7 +238,6 @@
                 this.hasJsonText = false;
                 var data = {anythingHere: thisVm.originalText};
                 axios.post(url, data).then(function (response) {
-                    console.log(response.data);
                     thisVm.splitText = response.data;
                     // 在原有 array 上增加
                     thisVm.toBeSelected.date.push(...thisVm.splitText.date);
@@ -301,16 +249,19 @@
                     thisVm.toBeSelected.adj.push(...thisVm.splitText.adj);
                     thisVm.toBeSelected.accusation.push(...thisVm.splitText.accusation);
                 })
+                this.$message('上传文书成功！');
+            },
+            uploadSuccess(res) {
+                this.originalText = res;
             },
             addName: function () {
-                var name = $("#toBeAddedName").val();
-                this.toBeSelected.person.push(name);
+                this.toBeSelected.person.push(this.toBeAddedName);
             },
             addLoc: function () {
-                this.toBeSelected.loc.push($("#toBeAddedLoc").val());
+                this.toBeSelected.loc.push(this.toBeAddedLoc);
             },
             addAccusation: function () {
-                this.toBeSelected.accusation.push($("#toBeAddedAccusation").val());
+                this.toBeSelected.accusation.push(this.toBeAddedAccusation);
             },
             addCourt: function () {
                 this.toBeSelected.court.push($("#toBeAddedCourt").val());

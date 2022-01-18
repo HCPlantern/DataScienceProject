@@ -1,15 +1,70 @@
+:root {
 
+    --base-font: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    --title-font: "EB Garamond", Georgia, "Noto Serif", "Noto Serif CJK SC",
+    "Nimbus Roman No9 L", "Songti SC", "Source Han Serif SC",
+    "Source Han Serif CN", STSong, "AR PL New Sung", "AR PL SungtiL GB", NSimSun,
+    SimSun, "TW\-Sung", "WenQuanYi Bitmap Song", "AR PL UMing CN",
+    "AR PL UMing HK", "AR PL UMing TW", "AR PL UMing TW MBE", PMingLiU, MingLiU,
+    "Ubuntu", "Source Sans Pro", serif;
+
+}
+h1 {
+    text-align: center;
+    font-size: 2.25em;
+    margin-bottom: 2rem;
+}
+h1:after {
+    content: "";
+    display: block;
+    margin: 0.2em auto 0;
+    width: 6rem;
+    height: 2px;
+    border-bottom: 2px solid ;
+}
+
+h2 {
+    padding-left: 0.4em;
+    font-size: 1.75em;
+    border-left: 0.4em solid ;
+    border-bottom: 1px solid ;
+}
+h3 {
+    font-size: 1.5em;
+}
+h4 {
+    font-size: 1.3em;
+}
+h5 {
+    font-size: 1.2em;
+}
+h6 {
+    font-size: 1.1em;
+}
 .main-body {
+    font-family: var(--base-font);
     max-width: 50rem;
     margin: auto;
     padding: 1rem 4rem;
-    height: 1200px;
+    box-shadow: #00000033 0 25px 56px 0, #0000001a 0 5px 15px 0;
+    border-radius: 5px;
 }
 
+#mark-part {
+    height: 600px;
+}
 #originalText {
     height: 25rem;
 }
 
 #tab-content {
     height: 350px;
+}
+
+.select-div {
+    margin: 2rem;
+}
+
+.manual-add {
+    margin: 2rem 0;
 }
