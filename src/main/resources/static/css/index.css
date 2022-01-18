@@ -43,7 +43,7 @@ h6 {
 }
 .main-body {
     font-family: var(--base-font);
-    max-width: 50rem;
+    max-width: 60rem;
     margin: auto;
     padding: 1rem 4rem;
     box-shadow: #00000033 0 25px 56px 0, #0000001a 0 5px 15px 0;
@@ -67,4 +67,14 @@ h6 {
 
 .manual-add {
     margin: 2rem 0;
+}
+
+.upload-file {
+    margin: 2rem 0;
+}
+
+.footer {
+    color: #58666e;
+    margin: 4rem 0 2rem 0;
+    float: right!important;
 }

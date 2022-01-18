@@ -19,7 +19,6 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
-
 <div class="main-body" id="main-body">
 
     <div id="split-part">
@@ -31,7 +30,7 @@
             </el-input>
 
         </div>
-        <div id="uploadFile">
+        <div id="uploadFile" class="upload-file">
             <h3>上传文书文件</h3>
             <el-upload
                     :limit="1"
@@ -46,10 +45,10 @@
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                 <div slot="tip" class="el-upload__tip">只能上传txt文件，且只能上传一个</div>
             </el-upload>
-            <el-button type="primary" :disabled="!hasOriginalText" id="splitConfirm"
-                       @click="splitConfirm">分词
-            </el-button>
         </div>
+        <el-button type="primary" :disabled="!hasOriginalText" id="splitConfirm"
+                   @click="splitConfirm">分词
+        </el-button>
     </div>
     <div id="mark-part">
         <h1> 标记部分 </h1>
@@ -118,7 +117,8 @@
                     </el-select>
                     <div id="manual-add-loc" class="manual-add">
                         <h5>手动输入地名</h5>
-                        <el-input type="text" id="toBeAddedLoc" v-model="toBeAddedLoc" placeholder="请输入地名"></el-input>
+                        <el-input type="text" id="toBeAddedLoc" v-model="toBeAddedLoc"
+                                  placeholder="请输入地名"></el-input>
                     </div>
                     <el-button type="primary" id="addLocConfirm" @click="addLoc">
                         确定添加
@@ -153,7 +153,7 @@
                 <!-- 选择法院 -->
                 <div id="select-court-div" class="select-div">
                     <h5>选择法院</h5>
-                    <el-select multiple v-model="selected.Courts">
+                    <el-select multiple filterable v-model="selected.Courts">
                         <el-option v-for="court in toBeSelected.court" v-bind:value="court">
                             {{ court }}
                         </el-option>
@@ -173,9 +173,17 @@
 
 
     </div>
-    <h3>导出</h3>
-    <el-button :disabled="!hasOriginalText" type="primary" @click="downloadtxt">导出案件文本</el-button>
-    <el-button :disabled="!hasJsonText" type="primary" @click="downloadjson">导出标注</el-button>
+    <div class="export-file">
+        <h3>导出</h3>
+        <el-button :disabled="!hasOriginalText" type="primary" @click="downloadtxt">导出案件文本</el-button>
+        <el-button :disabled="!hasJsonText" type="primary" @click="downloadjson">导出标注</el-button>
+    </div>
+
+    <div class="footer">
+           <span>
+               Powered by Team workHard | Themed by <a href="https://element.eleme.cn/#/zh-CN">Element UI</a>
+           </span>
+    </div>
 </div>
 
 <script>
