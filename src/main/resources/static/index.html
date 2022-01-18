@@ -326,13 +326,27 @@
             },
             downloadtxt: function () {
                 var text = this.originalText;
+                var name = '';
+                if(this.uploadFileName !== ''){
+                    name = this.uploadFileName;
+                }else{
+                    var tmp = this.originalText.split("\n")[0];
+                    name = tmp;
+                }
                 let str = new Blob([text], { type: 'text/plain;charset=utf-8' });
-                saveAs(str, `案件文本.txt`);
+                saveAs(str, name + `.txt`);
             },
             downloadjson: function () {
                 var text = this.selected;
+                var name = '';
+                if(this.uploadFileName !== ''){
+                    name = this.uploadFileName;
+                }else{
+                    var tmp = this.originalText.split("\n")[0];
+                    name = tmp;
+                }
                 let str = new Blob([JSON.stringify(text)], { type: 'text/plain;charset=utf-8' });
-                saveAs(str, `标注.json`);
+                saveAs(str, name + `.json`);
             }
 
         }
