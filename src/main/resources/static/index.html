@@ -65,7 +65,7 @@
                     </el-select>
                     <div id="manual-add-name" class="manual-add">
                         <h5>手动输入人名</h5>
-                        <el-input id="toBeAddedName" placeholder="请输入人名" v-model="toBeAddedName">
+                        <el-input id="toBeAddedName" placeholder="请输入人名" v-model="toBeAdded.person">
                         </el-input>
                     </div>
                     <el-button type="primary" id="addNameConfirm" @click="addName">
@@ -117,7 +117,7 @@
                     </el-select>
                     <div id="manual-add-loc" class="manual-add">
                         <h5>手动输入地名</h5>
-                        <el-input type="text" id="toBeAddedLoc" v-model="toBeAddedLoc"
+                        <el-input type="text" id="toBeAddedLoc" v-model="toBeAdded.loc"
                                   placeholder="请输入地名"></el-input>
                     </div>
                     <el-button type="primary" id="addLocConfirm" @click="addLoc">
@@ -141,7 +141,7 @@
                     <div id="manual-add-accusation" class="manual-add">
                         <h5>手动输入案由</h5>
                         <el-input type="text" id="toBeAddedAccusation" placeholder="请输入案由"
-                                  v-model="toBeAddedAccusation"></el-input>
+                                  v-model="toBeAdded.accusation"></el-input>
                     </div>
                     <el-button type="primary" id="addAccusationConfirm" @click="addAccusation">
                         确定添加
@@ -161,7 +161,7 @@
                     <div id="manual-add-court" class="manual-add">
                         <h5>手动输入法院</h5>
                         <el-input type="text" id="toBeAddedCourt" placeholder="请输入法院"
-                                  v-model="toBeAddedCourt"></el-input>
+                                  v-model="toBeAdded.court"></el-input>
                     </div>
                     <el-button type="primary" id="addCourtConfirm" @click="addCourt">
                         确定添加
@@ -198,10 +198,14 @@
             hasJsonText: false,
             originalText: '',
             splitText: [],
-            toBeAddedName: '',
-            toBeAddedLoc: '',
-            toBeAddedAccusation: '',
-            toBeAddedCourt: '',
+            // 这个是对应选择框中的内容
+            toBeAdded: {
+                person: '',
+                loc: '',
+                accusation: '',
+                court: '',
+            },
+            // 对应原始分词数据加上用户已选择选项
             toBeSelected: {
                 date: [],
                 loc: [],
@@ -212,6 +216,7 @@
                 verb: [],
                 adj: [],
             },
+            // 对应已选择的选项
             selected: {
                 Criminals: '',
                 Gender: '',
@@ -242,6 +247,7 @@
                for (var i = 0; i < Object.values(vm.toBeSelected).length; i++) {
                    Object.values(vm.toBeSelected)[i].splice(1, Object.values(vm.toBeSelected)[i].length);
                }
+               this.clearSelected();
                 var thisVm = this;
                 this.hasJsonText = false;
                 var data = {anythingHere: thisVm.originalText};
@@ -262,14 +268,19 @@
             uploadSuccess(res) {
                 this.originalText = res;
             },
+            clearSelected() {
+                for (var key in this.selected) {
+                    this.selected[key] = '';
+                }
+            },
             addName: function () {
-                this.toBeSelected.person.push(this.toBeAddedName);
+                this.toBeSelected.person.push(this.toBeAdded.person);
             },
             addLoc: function () {
-                this.toBeSelected.loc.push(this.toBeAddedLoc);
+                this.toBeSelected.loc.push(this.toBeAdded.loc);
             },
             addAccusation: function () {
-                this.toBeSelected.accusation.push(this.toBeAddedAccusation);
+                this.toBeSelected.accusation.push(this.toBeAdded.accusation);
             },
             addCourt: function () {
                 this.toBeSelected.court.push($("#toBeAddedCourt").val());
