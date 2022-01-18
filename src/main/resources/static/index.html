@@ -28,8 +28,20 @@
         <div>
             <h3>手动输入文书</h3>
             <el-input type="textarea" :autosize="{ minRows: 10, maxRows: 20}" placeholder="请输入文书内容" name="text"
-                      id="originalText" class="form-control" v-model="originalText">
+                      id="original-text" class="original-text" v-model="originalText">
             </el-input>
+
+            <el-popover
+                    placement="top"
+                    width="160">
+            <p>确定清空文本框吗？</p>
+            <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text">取消</el-button>
+                <el-button type="primary" size="mini" @click="clearOriginalText">确定</el-button>
+            </div>
+            <el-button type="danger" slot="reference">清空文本框</el-button>
+            </el-popover>
+
 
         </div>
         <div id="uploadFile" class="upload-file">
@@ -45,6 +57,7 @@
             >
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div slot="tip" class="el-upload__tip">只能上传txt文件，且只能上传一个</div>
             </el-upload>
         </div>
         <div class="upload-file" id="wehshuFileConfirm">
@@ -311,6 +324,9 @@
                 for (var key in this.selected) {
                     this.selected[key] = '';
                 }
+            },
+            clearOriginalText() {
+                this.originalText = '';
             },
             addName: function () {
                 this.toBeSelected.person.push(this.toBeAdded.person);
