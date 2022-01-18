@@ -1,0 +1,15 @@
+
+.main-body {
+    max-width: 50rem;
+    margin: auto;
+    padding: 1rem 4rem;
+    height: 1200px;
+}
+
+#originalText {
+    height: 25rem;
+}
+
+#tab-content {
+    height: 350px;
+}

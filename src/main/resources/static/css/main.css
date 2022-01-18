@@ -7,7 +7,10 @@ h1{
 	.input1{
 		text-align: center;
 	}
-	textarea{
+	.input2{
+		background: #FBFBFB;
+	}
+	.textarea1{
 		font-weight: bold;
 		font-size: 12pt;
 		border-radius: 5px;
@@ -16,7 +19,7 @@ h1{
 		background-position:center;
 		background-repeat: no-repeat;
 	}
-	textarea:focus{
+	.textarea1:focus{
 		background: #FBFBFB;
 	}
 	

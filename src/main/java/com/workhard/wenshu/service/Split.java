@@ -3,6 +3,9 @@ package com.workhard.wenshu.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.hankcs.hanlp.collection.AhoCorasick.AhoCorasickDoubleArrayTrie;
+import com.hankcs.hanlp.dictionary.CoreDictionary;
+import com.hankcs.hanlp.dictionary.CustomDictionary;
 import com.hankcs.hanlp.restful.HanLPClient;
 import lombok.Data;
 
@@ -17,6 +20,8 @@ public class Split {
     private static final String location = "LOCATION";
     private static final String person = "PERSON";
     private static HanLPClient client;
+    private static final String url = "https://www.hanlp.com/api";
+    private static final String auth = "NjYyQGJicy5oYW5scC5jb206T0NMNmd3Yjl3QW93Z1RnQg==";
 
     @JSONField(name = "org", ordinal = 3)
     private final HashSet<String> orgSet;
@@ -26,20 +31,23 @@ public class Split {
     private final HashSet<String> locationSet;
     @JSONField(name = "court", ordinal = 4)
     private final HashSet<String> courtSet;
-    @JSONField(name = "name", ordinal = 5)
+    @JSONField(name = "person", ordinal = 5)
     private final HashSet<String> personSet;
-    @JSONField(name = "verb", ordinal = 6)
+    @JSONField(name = "accusation", ordinal = 6)
+    private final HashSet<String> accusationSet;
+    @JSONField(name = "verb", ordinal = 7)
     private final HashSet<String> verbSet;
-    @JSONField(name = "adj", ordinal = 7)
+    @JSONField(name = "adj", ordinal = 8)
     private final HashSet<String> adjSet;
 
     public Split() {
-        client = new HanLPClient("https://www.hanlp.com/api", "NjYyQGJicy5oYW5scC5jb206T0NMNmd3Yjl3QW93Z1RnQg==");
+        client = new HanLPClient(url, auth);
         orgSet = new LinkedHashSet<>();
         dateSet = new LinkedHashSet<>();
         locationSet = new LinkedHashSet<>();
         courtSet = new LinkedHashSet<>();
         personSet = new LinkedHashSet<>();
+        accusationSet = new LinkedHashSet<>();
         verbSet = new LinkedHashSet<>();
         adjSet = new LinkedHashSet<>();
     }
@@ -54,7 +62,9 @@ public class Split {
         // 分别处理四种特殊情况
         addFourSet(participleRes.get("ner/msra"));
         addNounAdj(participleRes.get("tok/fine"), participleRes.get("pos/pku"));
+        addAccusation(text);
     }
+
 
     /* 对地点集合进行特殊的合并操作 */
     private void addFourSet(List msra) {
@@ -137,8 +147,23 @@ public class Split {
         }
     }
 
+
+    private void addAccusation(String text) {
+        addCustomDic.addAccusationToDic();
+        final char[] charArray = text.toCharArray();
+        CustomDictionary.parseText(charArray, new AhoCorasickDoubleArrayTrie.IHit<CoreDictionary.Attribute>() {
+            @Override
+            public void hit(int begin, int end, CoreDictionary.Attribute value) {
+                String lexical = value.toString().split(" ")[0];
+                if (lexical.equals("accusation")) {
+                    accusationSet.add(new String(charArray, begin, end - begin));
+                }
+            }
+        });
+    }
+
     public String toString() {
-       return JSON.toJSONString(this);
+        return JSON.toJSONString(this);
     }
 
 }

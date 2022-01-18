@@ -3,6 +3,9 @@ package com.workhard.wenshu.service;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
+/**
+ * !! 此类并未被使用 !!
+ */
 @Data
 public class SubjectInfo {
     @JSONField(name = "名称", ordinal = 1)
