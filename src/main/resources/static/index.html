@@ -45,12 +45,14 @@
             >
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div slot="tip" class="el-upload__tip">只能上传txt文件，且只能上传一个</div>
             </el-upload>
         </div>
-        <el-button type="primary" :disabled="!hasOriginalText" id="splitConfirm"
-                   @click="splitConfirm">分词
-        </el-button>
+        <div class="upload-file" id="wehshuFileConfirm">
+            <el-button type="success" :disabled="!hasOriginalText" id="splitConfirm"
+                       @click="splitConfirm">分词
+            </el-button>
+        </div>
+
     </div>
     <div id="mark-part">
         <h1> 标记部分 </h1>
@@ -186,7 +188,7 @@
                 <el-button size="mini" type="text" @click="downloadTxtVisible = false">取消</el-button>
                 <el-button type="primary" size="mini" @click="downloadtxt">确定</el-button>
             </div>
-            <el-button slot="reference">导出案件文本</el-button>
+            <el-button type="primary" :disabled="!hasOriginalText" slot="reference">导出案件文本</el-button>
         </el-popover>
 
         <el-popover
@@ -194,12 +196,12 @@
                 width="160"
                 v-model="downloadJsonVisible">
             <p>确定导出标注吗？</p>
+            <p>标注预览：<br>{{ selected }}</p>
             <div style="text-align: right; margin: 0">
-                <p>标注预览：{{ selected }}</p>
                 <el-button size="mini" type="text" @click="downloadJsonVisible = false">取消</el-button>
                 <el-button type="primary" size="mini" @click="downloadjson">确定</el-button>
             </div>
-            <el-button slot="reference">导出标注</el-button>
+            <el-button type="primary" :disabled="!hasJsonText" slot="reference">导出标注</el-button>
         </el-popover>
 
     </div>
