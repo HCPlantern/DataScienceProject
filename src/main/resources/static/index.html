@@ -196,7 +196,14 @@
                 width="160"
                 v-model="downloadJsonVisible">
             <p>确定导出标注吗？</p>
-            <p>标注预览：<br>{{ selected }}</p>
+            <p>标注预览：<br>
+                人名：{{ selected.Criminals }} <br>
+                性别: {{ selected.Gender }} <br>
+                民族: {{ selected.Ethnicity }} <br>
+                出生地: {{ selected.Birthplace }} <br>
+                案由: {{ selected.Accusation }} <br>
+                法院: {{ selected.Courts }} <br>
+            </p>
             <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="downloadJsonVisible = false">取消</el-button>
                 <el-button type="primary" size="mini" @click="downloadjson">确定</el-button>
