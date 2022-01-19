@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>This is a test"</title>
+    <title>司法大数据自动化标注与分析</title>
     <link href="css/index.css" rel="stylesheet">
 
     <!--引入 element-ui 的样式，-->
@@ -22,9 +22,10 @@
 </head>
 <body>
 <div class="main-body" id="main-body">
-
+    <h1>司法大数据<br>自动化标注与分析</h1>
+    <p class="team" style="text-align: right"><strong>Team WorkHard</strong></p>
     <div id="split-part">
-        <h1>文书部分</h1>
+        <h2>文书部分</h2>
         <div>
             <h3>手动输入文书</h3>
 
@@ -70,7 +71,7 @@
 
     </div>
     <div id="mark-part">
-        <h1> 标记部分 </h1>
+        <h2> 标记部分 </h2>
 
         <el-tabs tab-position="top" type="border-card">
             <el-tab-pane label="姓名">
@@ -193,44 +194,53 @@
     </div>
     <div class="export-file">
 
-        <h3>导出</h3>
-        <el-popover
-                placement="top"
-                width="160"
-                v-model="downloadTxtVisible">
-            <p>确定导出案件文本吗？</p>
-            <div style="text-align: right; margin: 0">
-                <el-button size="mini" type="text" @click="downloadTxtVisible = false">取消</el-button>
-                <el-button type="primary" size="mini" @click="downloadtxt">确定</el-button>
-            </div>
-            <el-button type="primary" :disabled="!hasOriginalText" slot="reference">导出案件文本</el-button>
-        </el-popover>
+        <h2>导出</h2>
+        <div class="export-button">
+            <div class="export-button-single">
 
-        <el-popover
-                placement="top"
-                width="160"
-                v-model="downloadJsonVisible">
-            <p>确定导出标注吗？</p>
-            <p>标注预览：<br>
-                人名：{{ selected.Criminals }} <br>
-                性别: {{ selected.Gender }} <br>
-                民族: {{ selected.Ethnicity }} <br>
-                出生地: {{ selected.Birthplace }} <br>
-                案由: {{ selected.Accusation }} <br>
-                法院: {{ selected.Courts }} <br>
-            </p>
-            <div style="text-align: right; margin: 0">
-                <el-button size="mini" type="text" @click="downloadJsonVisible = false">取消</el-button>
-                <el-button type="primary" size="mini" @click="downloadjson">确定</el-button>
+                <el-popover
+                        placement="top"
+                        width="160"
+                        v-model="downloadTxtVisible">
+                    <p>确定导出案件文本吗？</p>
+                    <div style="text-align: right; margin: 0">
+                        <el-button size="mini" type="text" @click="downloadTxtVisible = false">取消</el-button>
+                        <el-button type="primary" size="mini" @click="downloadtxt">确定</el-button>
+                    </div>
+                    <el-button type="primary" :disabled="!hasOriginalText" slot="reference">导出文本</el-button>
+                </el-popover>
             </div>
-            <el-button type="primary" :disabled="!hasJsonText" slot="reference">导出标注</el-button>
-        </el-popover>
 
+            <div class="export-button-single">
+
+                <el-popover
+                        placement="top"
+                        width="160"
+                        v-model="downloadJsonVisible">
+                    <p>确定导出标注吗？</p>
+                    <p>标注预览：<br>
+                        人名：{{ selected.Criminals }} <br>
+                        性别: {{ selected.Gender }} <br>
+                        民族: {{ selected.Ethnicity }} <br>
+                        出生地: {{ selected.Birthplace }} <br>
+                        案由: {{ selected.Accusation }} <br>
+                        法院: {{ selected.Courts }} <br>
+                    </p>
+                    <div style="text-align: right; margin: 0">
+                        <el-button size="mini" type="text" @click="downloadJsonVisible = false">取消</el-button>
+                        <el-button type="primary" size="mini" @click="downloadjson">确定</el-button>
+                    </div>
+                    <el-button type="primary" :disabled="!hasJsonText" slot="reference">导出标注</el-button>
+                </el-popover>
+
+            </div>
+
+        </div>
     </div>
 
     <div class="footer">
            <span>
-               Powered by Team workHard | Themed by <a href="https://element.eleme.cn/#/zh-CN">Element UI</a>
+               Powered by Team WorkHard | Themed by <a href="https://element.eleme.cn/#/zh-CN">Element UI</a>
            </span>
     </div>
 </div>
