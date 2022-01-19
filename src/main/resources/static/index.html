@@ -52,6 +52,7 @@
             <el-upload
                     :limit="1"
                     drag
+                    ref="upload"
                     id="wenshuFile"
                     name="wenshuFile"
                     action="/upload"
@@ -336,7 +337,7 @@
             uploadSuccess(res, file, fileList) {
                 this.originalText = res;
                 this.uploadFileName = file.name;
-                console.log(this.uploadFileName);
+                this.$refs.upload.clearFiles();
             },
             clearSelected() {
                 for (var key in this.selected) {
@@ -387,7 +388,7 @@
 
                 let str = new Blob([JSON.stringify(text)], { type: 'text/plain;charset=utf-8' });
                 saveAs(str, name + `.json`);
-            }
+            },
 
         }
     })
