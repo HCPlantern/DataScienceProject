@@ -366,6 +366,7 @@
                 var name = '';
                 if(this.uploadFileName !== ''){
                     name = this.uploadFileName;
+                    name = name.substring(0, name.length - 4);
                 }else{
                     var tmp = this.originalText.split("\n")[0];
                     name = tmp;
@@ -379,6 +380,7 @@
                 var name = '';
                 if(this.uploadFileName !== ''){
                     name = this.uploadFileName;
+                    name = name.substring(0, name.length - 4);
                 }else{
                     var tmp = this.originalText.split("\n")[0];
                     name = tmp;
