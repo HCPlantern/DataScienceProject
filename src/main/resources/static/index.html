@@ -27,20 +27,22 @@
         <h1>文书部分</h1>
         <div>
             <h3>手动输入文书</h3>
-            <el-input type="textarea" :autosize="{ minRows: 10, maxRows: 20}" placeholder="请输入文书内容" name="text"
-                      id="original-text" class="original-text" v-model="originalText">
-            </el-input>
 
             <el-popover
                     placement="top"
-                    width="160">
-            <p>确定清空文本框吗？</p>
-            <div style="text-align: right; margin: 0">
-                <el-button size="mini" type="text">取消</el-button>
-                <el-button type="primary" size="mini" @click="clearOriginalText">确定</el-button>
-            </div>
-            <el-button type="danger" slot="reference">清空文本框</el-button>
+                    width="160"
+                    v-model="clearTextVisible"
+            >
+                <p>确定清空文本框吗？</p>
+                <div style="text-align: right; margin: 0">
+                    <el-button size="mini" type="text" @click="clearTextVisible=false">取消</el-button>
+                    <el-button type="primary" size="mini" @click="clearOriginalText">确定</el-button>
+                </div>
+                <el-button type="danger" slot="reference">清空文本框</el-button>
             </el-popover>
+            <el-input type="textarea" :autosize="{ minRows: 10, maxRows: 20}" placeholder="请输入文书内容" name="text"
+                      id="original-text" class="original-text" v-model="originalText">
+            </el-input>
 
 
         </div>
@@ -277,6 +279,7 @@
             ],
             downloadTxtVisible: false,
             downloadJsonVisible: false,
+            clearTextVisible: false,
             uploadFileName: '',
         },
         watch: {
@@ -326,6 +329,7 @@
                 }
             },
             clearOriginalText() {
+                this.clearTextVisible = false;
                 this.originalText = '';
             },
             addName: function () {
@@ -341,6 +345,7 @@
                 this.toBeSelected.court.push($("#toBeAddedCourt").val());
             },
             downloadtxt: function () {
+                this.downloadTxtVisible = false;
                 var text = this.originalText;
                 var name = '';
                 if(this.uploadFileName !== ''){
@@ -353,6 +358,7 @@
                 saveAs(str, name + `.txt`);
             },
             downloadjson: function () {
+                this.downloadJsonVisible = false;
                 var text = this.selected;
                 var name = '';
                 if(this.uploadFileName !== ''){
