@@ -325,6 +325,11 @@
                     thisVm.toBeSelected.verb.push(...thisVm.splitText.verb);
                     thisVm.toBeSelected.adj.push(...thisVm.splitText.adj);
                     thisVm.toBeSelected.accusation.push(...thisVm.splitText.accusation);
+
+                    thisVm.selected.Criminals = thisVm.toBeSelected.person.length >= 2 ? thisVm.toBeSelected.person[1] : thisVm.toBeSelected.person[0];
+                    thisVm.selected.Gender = "男";
+                    thisVm.selected.Ethnicity = thisVm.ethnicity[1];
+                    thisVm.selected.Birthplace = thisVm.toBeSelected.loc.length >= 2 ? thisVm.toBeSelected.loc[1] : thisVm.toBeSelected.loc[0];
                 })
                 this.$message('上传文书成功！');
             },
