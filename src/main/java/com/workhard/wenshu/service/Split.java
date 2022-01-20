@@ -155,13 +155,14 @@ public class Split {
             @Override
             public void hit(int begin, int end, CoreDictionary.Attribute value) {
                 String lexical = value.toString().split(" ")[0];
-                if (lexical.equals("accusation")) {
+                if ("accusation".equals(lexical)) {
                     accusationSet.add(new String(charArray, begin, end - begin));
                 }
             }
         });
     }
 
+    @Override
     public String toString() {
         return JSON.toJSONString(this);
     }
