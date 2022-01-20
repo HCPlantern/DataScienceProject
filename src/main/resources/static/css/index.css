@@ -92,3 +92,7 @@ h6 {
     margin: 4rem 0 2rem 0;
     float: right!important;
 }
+
+.select-multiple {
+    width: 100%;
+}

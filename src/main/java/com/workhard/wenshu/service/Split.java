@@ -59,6 +59,8 @@ public class Split {
 
     public void process(String text) throws IOException {
         Map<String, List> participleRes = client.parse(text, new String[]{"tok/fine", "pos/pku", "ner/msra"}, new String[]{});
+        // 添加罪名词典
+        addCustomDic.addAccusationToDic();
         // 分别处理四种特殊情况
         addFourSet(participleRes.get("ner/msra"));
         addNounAdj(participleRes.get("tok/fine"), participleRes.get("pos/pku"));
@@ -149,7 +151,6 @@ public class Split {
 
 
     private void addAccusation(String text) {
-        addCustomDic.addAccusationToDic();
         final char[] charArray = text.toCharArray();
         CustomDictionary.parseText(charArray, new AhoCorasickDoubleArrayTrie.IHit<CoreDictionary.Attribute>() {
             @Override
