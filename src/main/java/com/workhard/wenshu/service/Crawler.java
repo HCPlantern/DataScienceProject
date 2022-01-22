@@ -1,9 +1,9 @@
 package com.workhard.wenshu.service;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.BufferedWriter;
@@ -19,22 +19,20 @@ accountD = {13961496689, xjX2MS!WWPZdcT}
  */
 
 public class Crawler {
-    public static void main(String[] args) {
-        new Crawler().go();
-    }
-
     WebDriver driver;
     int WAIT_SECONDS = 5;
 
     public Crawler() {
-        System.setProperty("webdriver.edge.driver", "msedgedriver.exe");
-        EdgeOptions options = new EdgeOptions();
-        options.setCapability("UseChromium", true);
-        options.addArguments("--disable-blink-features=AutomationControlled");
-        options.setExperimentalOption("useAutomationExtension", false);
-        options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-        driver = new EdgeDriver(options);
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        driver = new ChromeDriver();
     }
+
+    public Crawler(int waitSecond) {
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        driver = new ChromeDriver();
+        WAIT_SECONDS = waitSecond;
+    }
+
 
     public void go() {
         driver.get("https://wenshu.court.gov.cn/");
@@ -43,9 +41,9 @@ public class Crawler {
         //login
         login("15371939295", "Zjh320682@nju", index);
 
-        //easyCrawl("周岩松");
+        easyCrawl("周岩松");
         //crawlByDate(new Date(110, 1, 1), new Date());
-        //download(6);
+        download(6);
 
         driver.quit();
     }
