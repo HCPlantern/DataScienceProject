@@ -151,7 +151,7 @@
                 <!-- 选择案由 -->
                 <div id="select-accusation-div" class="select-div">
                     <h5>选择案由</h5>
-                    <el-select multiple filterable v-model="selected.Accusation">
+                    <el-select  multiple filterable v-model="selected.Accusation" style="width: 100%">
                         <el-option v-for="accusation in toBeSelected.accusation" :value="accusation">
                             {{ accusation }}
                         </el-option>
@@ -172,7 +172,7 @@
                 <!-- 选择法院 -->
                 <div id="select-court-div" class="select-div">
                     <h5>选择法院</h5>
-                    <el-select multiple filterable v-model="selected.Courts">
+                    <el-select  multiple filterable v-model="selected.Courts" style="width: 100%">
                         <el-option v-for="court in toBeSelected.court" v-bind:value="court">
                             {{ court }}
                         </el-option>
